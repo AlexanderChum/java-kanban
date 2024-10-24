@@ -13,8 +13,8 @@ public class TaskManagerMain {
     Subtask subtask = new Subtask();
 
     public void taskManagerMain() {
-        printMenu();
         while (true) {
+            printMenu();
             String command = scanner.next();
             switch (command) {
                 case "1":
@@ -54,6 +54,8 @@ public class TaskManagerMain {
                 case "6":
 
                     break;
+                case "7":
+                    return;
                 default:
                     System.out.println("Введена неизвестная команда, попробуйте снова");
                     break;
@@ -70,6 +72,7 @@ public class TaskManagerMain {
                 4. Создание новой задачи
                 5. Обновить задачу или ее статус
                 6. Удаление конкретной задачи по идентификатору
+                7. Выйти из программы
                 """);
     }
 
