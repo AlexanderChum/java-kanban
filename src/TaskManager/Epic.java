@@ -7,8 +7,11 @@ public class Epic {
     private String name;
     private String description;
     private Condition condition;
-    private ArrayList<Subtask> subtask;
+    private ArrayList<Task> subtasks;
     Scanner scanner;
+    Task task = new Task();
+
+    //-----------------------------------Constructors------------------------------------------------------------------
 
     public Epic(Scanner scanner) {
         this.scanner = scanner;
@@ -19,6 +22,8 @@ public class Epic {
         this.description = description;
         this.condition = condition;
     }
+
+    //-------------------------------------Getters and Setters---------------------------------------------------------
 
     public String getName() {
         return name;
@@ -32,8 +37,8 @@ public class Epic {
         return condition;
     }
 
-    public ArrayList<Subtask> getSubtask() {
-        return subtask;
+    public ArrayList<Task> getSubtask() {
+        return subtasks;
     }
 
     public void setDescription(String description) {
@@ -44,12 +49,18 @@ public class Epic {
         this.condition = condition;
     }
 
+    //--------------------------------------Class Methods--------------------------------------------------------------
+
     public void printListOfEpics(ArrayList<Epic> epics) {
         int index = 0;
         for (Epic epic : epics) {
             index++;
             System.out.println(index + ". " + epic.getName());
         }
+    }
+
+    public void printListOfSubtasks(Epic epic) {
+        task.printListOfTasks(subtasks);
     }
 
     public void addSubtask(Epic epic) {
@@ -75,7 +86,21 @@ public class Epic {
                     break;
             }
         }
-        subtask.add(new Subtask(name, description, condition));
+        subtasks.add(new Subtask(name, description, condition));
     }
+
+    public void deleteListOfEpics(ArrayList<Epic> epics) {
+        epics.clear();
+    }
+
+    public void deleteListOfSubtasks(Epic epic) {
+        task.deleteListOfTasks(getSubtask());
+    }
+
+    public void getSubtaskById (Epic epic) {
+        System.out.println("Введите id подзадачи который хотите получить");
+        int subtaskId = scanner.nextInt();
+        System.out.println(subtasks.get(subtaskId - 1));
     }
 }
+
