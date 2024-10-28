@@ -63,6 +63,7 @@ public class TaskManagerMain {
                 1. Обычная задача
                 2. Эпик
                 3. Подзадача к эпику
+                4. Выход
                 """);
     }
 
@@ -84,11 +85,11 @@ public class TaskManagerMain {
                     int id = scanner.nextInt();
                     epic.printListOfSubtasks(epics.get(id - 1));
                     break;
+                case "4":
+                    return;
                 default:
                     System.out.println("Введена неверная команда, повторите ввод");
-                    break;
             }
-            break;
         }
     }
 
@@ -109,11 +110,11 @@ public class TaskManagerMain {
                     int id = scanner.nextInt();
                     epic.deleteListOfSubtasks(epics.get(id - 1));
                     break;
+                case "4":
+                    return;
                 default:
                     System.out.println("Введена неверная команда, повторите ввод");
-                    break;
             }
-            break;
         }
     }
 
@@ -139,11 +140,11 @@ public class TaskManagerMain {
                     int epicSubtaskId = scanner.nextInt();
                     epic.getSubtaskById(epics.get(epicSubtaskId - 1));
                     break;
+                case "4":
+                    return;
                 default:
                     System.out.println("Введена неверная команда, повторите ввод");
-                    break;
             }
-            break;
         }
     }
 
@@ -166,11 +167,11 @@ public class TaskManagerMain {
                     int id = scanner.nextInt();
                     epic.addSubtask(epics.get(id - 1));
                     break;
+                case "4":
+                    return;
                 default:
                     System.out.println("Введена неверная команда, повторите ввод");
-                    break;
             }
-            break;
         }
     }
 
@@ -196,11 +197,11 @@ public class TaskManagerMain {
                     int epicSubtaskId = scanner.nextInt();
                     epic.updateSubtask(epics.get(epicSubtaskId - 1));
                     break;
+                case "4":
+                    return;
                 default:
                     System.out.println("Введена неверная команда, повторите ввод");
-                    break;
             }
-            break;
         }
     }
 
@@ -226,11 +227,11 @@ public class TaskManagerMain {
                     int epicSubtaskId = scanner.nextInt();
                     epic.deleteById(epics.get(epicSubtaskId - 1));
                     break;
+                case "4":
+                    return;
                 default:
                     System.out.println("Введена неверная команда, повторите ввод");
-                    break;
             }
-            break;
         }
     }
 }
