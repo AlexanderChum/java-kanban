@@ -163,9 +163,13 @@ public class TaskManagerMain {
                     break;
                 case "3":
                     epic.printListOfEpics(epics);
-                    System.out.println("Выберите номер нужного эпика");
-                    int id = scanner.nextInt();
-                    epic.addSubtask(epics.get(id - 1));
+                    if (!epics.isEmpty()) {
+                        System.out.println("Выберите номер нужного эпика");
+                        int id = scanner.nextInt();
+                        epic.addSubtask(epics.get(id - 1));
+                    } else {
+                        System.out.println("На данный момент нет эпиков для добавления подзадачи");
+                    }
                     break;
                 case "4":
                     return;
