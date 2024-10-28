@@ -75,15 +75,27 @@ public class TaskManagerMain {
             String taskTypeCommand = scanner.next();
             switch (taskTypeCommand) {
                 case "1":
-                    task.printListOfTasks(tasks);
+                    if (!tasks.isEmpty()) {
+                        task.printListOfTasks(tasks);
+                    } else {
+                        System.out.println("В данный момент список задач пуст, попробуйте другой");
+                    }
                     break;
                 case "2":
-                    epic.printListOfEpics(epics);
+                    if (!epics.isEmpty()) {
+                        epic.printListOfEpics(epics);
+                    } else {
+                        System.out.println("В данный момент список эпиков пуст, попробуйте другой");
+                    }
                     break;
                 case "3":
-                    System.out.println("Введите номер эпика");
-                    int id = scanner.nextInt();
-                    epic.printListOfSubtasks(epics.get(id - 1));
+                    if (!epics.isEmpty()) {
+                        System.out.println("Введите id эпика");
+                        int id = scanner.nextInt();
+                        epic.printListOfSubtasks(epics.get(id - 1));
+                    } else {
+                        System.out.println("В данный момент список эпиков пуст, попробуйте другой");
+                    }
                     break;
                 case "4":
                     return;
@@ -101,14 +113,27 @@ public class TaskManagerMain {
             String taskTypeCommand = scanner.next();
             switch (taskTypeCommand) {
                 case "1":
-                    task.deleteListOfTasks(tasks);
+                    if (!tasks.isEmpty()) {
+                        task.deleteListOfTasks(tasks);
+                    } else {
+                        System.out.println("В данный момент список задач пуст, попробуйте другой");
+                    }
                     break;
                 case "2":
-                    epic.deleteListOfEpics(epics);
+                    if (!epics.isEmpty()) {
+                        epic.deleteListOfEpics(epics);
+                    } else {
+                        System.out.println("В данный момент список эпиков пуст, попробуйте другой");
+                    }
                     break;
                 case "3":
-                    int id = scanner.nextInt();
-                    epic.deleteListOfSubtasks(epics.get(id - 1));
+                    if (!epics.isEmpty()) {
+                        System.out.println("Введите id эпика");
+                        int id = scanner.nextInt();
+                        epic.deleteListOfSubtasks(epics.get(id - 1));
+                    } else {
+                        System.out.println("В данный момент список эпиков пуст, попробуйте другой");
+                    }
                     break;
                 case "4":
                     return;
@@ -126,19 +151,31 @@ public class TaskManagerMain {
             String taskTypeCommand = scanner.next();
             switch (taskTypeCommand) {
                 case "1":
-                    System.out.println("Введите id задачи:");
-                    int taskId = scanner.nextInt();
-                    task.printTaskById(tasks.get(taskId - 1));
+                    if (!tasks.isEmpty()) {
+                        System.out.println("Введите id задачи:");
+                        int taskId = scanner.nextInt();
+                        task.printTaskById(tasks.get(taskId - 1));
+                    } else {
+                        System.out.println("В данный момент список задач пуст, попробуйте другой");
+                    }
                     break;
                 case "2":
-                    System.out.println("Введите id эпика:");
-                    int epicId = scanner.nextInt();
-                    epic.printEpicById(epics.get(epicId - 1));
+                    if (!epics.isEmpty()) {
+                        System.out.println("Введите id эпика:");
+                        int epicId = scanner.nextInt();
+                        epic.printEpicById(epics.get(epicId - 1));
+                    } else {
+                        System.out.println("В данный момент список эпиков пуст, попробуйте другой");
+                    }
                     break;
                 case "3":
-                    System.out.println("Введите id эпика из которого желаете получить информацию о подзадаче:");
-                    int epicSubtaskId = scanner.nextInt();
-                    epic.getSubtaskById(epics.get(epicSubtaskId - 1));
+                    if (!epics.isEmpty()) {
+                        System.out.println("Введите id эпика из которого желаете получить информацию о подзадаче:");
+                        int epicSubtaskId = scanner.nextInt();
+                        epic.getSubtaskById(epics.get(epicSubtaskId - 1));
+                    } else {
+                        System.out.println("В данный момент список эпиков пуст, попробуйте другой");
+                    }
                     break;
                 case "4":
                     return;
@@ -164,7 +201,7 @@ public class TaskManagerMain {
                 case "3":
                     epic.printListOfEpics(epics);
                     if (!epics.isEmpty()) {
-                        System.out.println("Выберите номер нужного эпика");
+                        System.out.println("Выберите id нужного эпика");
                         int id = scanner.nextInt();
                         epic.addSubtask(epics.get(id - 1));
                     } else {
@@ -187,19 +224,31 @@ public class TaskManagerMain {
             String taskTypeCommand = scanner.next();
             switch (taskTypeCommand) {
                 case "1":
-                    System.out.println("Введите id задачи:");
-                    int taskId = scanner.nextInt();
-                    tasks.set(taskId - 1, task.updateTask());
+                    if (!tasks.isEmpty()) {
+                        System.out.println("Введите id задачи:");
+                        int taskId = scanner.nextInt();
+                        tasks.set(taskId - 1, task.updateTask());
+                    } else {
+                        System.out.println("В данный момент список задач пуст, попробуйте другой");
+                    }
                     break;
                 case "2":
-                    System.out.println("Введите id эпика:");
-                    int epicId = scanner.nextInt();
-                    epics.set(epicId - 1, epic.updateEpic(epics.get(epicId - 1)));
+                    if (!epics.isEmpty()) {
+                        System.out.println("Введите id эпика:");
+                        int epicId = scanner.nextInt();
+                        epics.set(epicId - 1, epic.updateEpic(epics.get(epicId - 1)));
+                    } else {
+                        System.out.println("В данный момент список эпиков пуст, попробуйте другой");
+                    }
                     break;
                 case "3":
-                    System.out.println("Введите id эпика из которого желаете получить информацию о подзадаче:");
-                    int epicSubtaskId = scanner.nextInt();
-                    epic.updateSubtask(epics.get(epicSubtaskId - 1));
+                    if (!epics.isEmpty()) {
+                        System.out.println("Введите id эпика из которого желаете получить информацию о подзадаче:");
+                        int epicSubtaskId = scanner.nextInt();
+                        epic.updateSubtask(epics.get(epicSubtaskId - 1));
+                    } else {
+                        System.out.println("В данный момент список эпиков пуст, попробуйте другой");
+                    }
                     break;
                 case "4":
                     return;
@@ -217,19 +266,31 @@ public class TaskManagerMain {
             String taskTypeCommand = scanner.next();
             switch (taskTypeCommand) {
                 case "1":
-                    System.out.println("Введите id задачи:");
-                    int taskId = scanner.nextInt();
-                    tasks.remove(taskId - 1);
+                    if (!tasks.isEmpty()) {
+                        System.out.println("Введите id задачи:");
+                        int taskId = scanner.nextInt();
+                        tasks.remove(taskId - 1);
+                    } else {
+                        System.out.println("В данный момент список задач пуст, попробуйте другой");
+                    }
                     break;
                 case "2":
-                    System.out.println("Введите id эпика:");
-                    int epicId = scanner.nextInt();
-                    epics.remove(epicId - 1);
+                    if (!epics.isEmpty()) {
+                        System.out.println("Введите id эпика:");
+                        int epicId = scanner.nextInt();
+                        epics.remove(epicId - 1);
+                    } else {
+                        System.out.println("В данный момент список эпиков пуст, попробуйте другой");
+                    }
                     break;
                 case "3":
-                    System.out.println("Введите id эпика у которого желаете удалить подзадачу:");
-                    int epicSubtaskId = scanner.nextInt();
-                    epic.deleteById(epics.get(epicSubtaskId - 1));
+                    if (!epics.isEmpty()) {
+                        System.out.println("Введите id эпика у которого желаете удалить подзадачу:");
+                        int epicSubtaskId = scanner.nextInt();
+                        epic.deleteById(epics.get(epicSubtaskId - 1));
+                    } else {
+                        System.out.println("В данный момент список эпиков пуст, попробуйте другой");
+                    }
                     break;
                 case "4":
                     return;

@@ -81,7 +81,11 @@ public class Epic {
     }
 
     public void printListOfSubtasks(Epic epic) {
-        task.printListOfTasks(getSubtask(epic));
+        if (!getSubtask(epic).isEmpty()) {
+            task.printListOfTasks(getSubtask(epic));
+        } else {
+            System.out.println("Списка подзадач для эпика не существует");
+        }
     }
 
     //---------------------------------------
@@ -91,7 +95,11 @@ public class Epic {
     }
 
     public void deleteListOfSubtasks(Epic epic) {
-        task.deleteListOfTasks(getSubtask(epic));
+        if (!getSubtask(epic).isEmpty()) {
+            task.deleteListOfTasks(getSubtask(epic));
+        } else {
+            System.out.println("Списка подзадач для эпика не существует");
+        }
     }
 
     //------------------------------------------
@@ -103,9 +111,13 @@ public class Epic {
     }
 
     public void getSubtaskById(Epic epic) {
-        System.out.println("Введите id подзадачи который хотите получить");
-        int subtaskId = scanner.nextInt();
-        task.printTaskById(getSubtask(epic).get(subtaskId - 1));
+        if (!getSubtask(epic).isEmpty()) {
+            System.out.println("Введите id подзадачи который хотите получить");
+            int subtaskId = scanner.nextInt();
+            task.printTaskById(getSubtask(epic).get(subtaskId - 1));
+        } else {
+            System.out.println("Списка подзадач для эпика не существует");
+        }
     }
 
     //------------------------------------------
@@ -141,19 +153,27 @@ public class Epic {
     }
 
     public void updateSubtask(Epic epic) {
-        System.out.println("Введите id подзадачи которую желаете обновить:");
-        int subtaskId = scanner.nextInt();
-        getSubtask(epic).set(subtaskId - 1, task.updateTask());
-        setCondition(epic);
+        if (!getSubtask(epic).isEmpty()) {
+            System.out.println("Введите id подзадачи которую желаете обновить:");
+            int subtaskId = scanner.nextInt();
+            getSubtask(epic).set(subtaskId - 1, task.updateTask());
+            setCondition(epic);
+        } else {
+            System.out.println("Списка подзадач для эпика не существует");
+        }
     }
 
     //-----------------------------------------------
 
     public void deleteById(Epic epic) {
-        System.out.println("Введите id подзадачи для удаления");
-        int subTaskId = scanner.nextInt();
-        getSubtask(epic).remove(subTaskId - 1);
-        setCondition(epic);
+        if (!getSubtask(epic).isEmpty()) {
+            System.out.println("Введите id подзадачи для удаления");
+            int subTaskId = scanner.nextInt();
+            getSubtask(epic).remove(subTaskId - 1);
+            setCondition(epic);
+        } else {
+            System.out.println("Списка подзадач для эпика не существует");
+        }
     }
 }
 
