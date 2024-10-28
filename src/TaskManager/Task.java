@@ -1,16 +1,18 @@
 package TaskManager;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Task {
     private String name;
     private String description;
     private Condition condition;
+    Scanner scanner;
 
     //-----------------------------------Constructors------------------------------------------------------------------
 
-    public Task() {
-
+    public Task(Scanner scanner) {
+        this.scanner = scanner;
     }
 
     public Task(String name, String description, Condition condition) {
@@ -25,24 +27,8 @@ public class Task {
         return name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public Condition getCondition() {
-        return condition;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setCondition(Condition condition) {
-        this.condition = condition;
+    public Condition getCondition(Task task) {
+        return task.condition;
     }
 
     //--------------------------------------Class Methods--------------------------------------------------------------
@@ -57,5 +43,57 @@ public class Task {
 
     public void deleteListOfTasks(ArrayList<Task> tasks) {
         tasks.clear();
+    }
+
+    public Task createTask() {
+        System.out.println("Название:");
+        String name = scanner.nextLine();
+        System.out.println("Описание");
+        String description = scanner.nextLine();
+        System.out.println("Статус задачи");
+        do {
+            String conditionType = scanner.next();
+            switch (conditionType) {
+                case "NEW":
+                    condition = Condition.NEW;
+                    break;
+                case "IN_PROGRESS":
+                    condition = Condition.IN_PROGRESS;
+                    break;
+                case "DONE":
+                    condition = Condition.DONE;
+                    break;
+                default:
+                    System.out.println("Введен неверный статус");
+                    break;
+            }
+        } while (condition == null);
+        return new Task(name, description, condition);
+    }
+
+    public Task updateTask() {
+        System.out.println("Введите новое название:");
+        String name = scanner.nextLine();
+        System.out.println("Введите новое описание");
+        String description = scanner.nextLine();
+        System.out.println("Введите новый статус задачи");
+        do {
+            String conditionType = scanner.next();
+            switch (conditionType) {
+                case "NEW":
+                    condition = Condition.NEW;
+                    break;
+                case "IN_PROGRESS":
+                    condition = Condition.IN_PROGRESS;
+                    break;
+                case "DONE":
+                    condition = Condition.DONE;
+                    break;
+                default:
+                    System.out.println("Введен неверный статус");
+                    break;
+            }
+        } while (condition == null);
+        return new Task(name, description, condition);
     }
 }

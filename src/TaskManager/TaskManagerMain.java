@@ -7,8 +7,7 @@ public class TaskManagerMain {
     Scanner scanner = new Scanner(System.in);
     ArrayList<Task> tasks = new ArrayList<>();
     ArrayList<Epic> epics = new ArrayList<>();
-    Condition condition;
-    Task task = new Task();
+    Task task = new Task(scanner);
     Epic epic = new Epic(scanner);
 
     public void taskManagerMain() {
@@ -29,10 +28,10 @@ public class TaskManagerMain {
                     createObjectTask();
                     break;
                 case "5":
-
+                    updateById();
                     break;
                 case "6":
-
+                    deleteById();
                     break;
                 case "7":
                     return;
@@ -42,6 +41,8 @@ public class TaskManagerMain {
             }
         }
     }
+
+    //-----------------------------------------------------------------------------------------------------------------
 
     private void printMenu() {
         System.out.println("""
@@ -73,32 +74,21 @@ public class TaskManagerMain {
             String taskTypeCommand = scanner.next();
             switch (taskTypeCommand) {
                 case "1":
-                    printListOfTasks();
+                    task.printListOfTasks(tasks);
                     break;
                 case "2":
-                    printListOfEpics();
+                    epic.printListOfEpics(epics);
                     break;
                 case "3":
+                    System.out.println("Введите номер эпика");
                     int id = scanner.nextInt();
-                    printListOfSubtasks(id);
+                    epic.printListOfSubtasks(epics.get(id - 1));
                     break;
                 default:
                     System.out.println("Введена неверная команда, повторите ввод");
                     break;
             }
         }
-    }
-
-    private void printListOfEpics() {
-        epic.printListOfEpics(epics);
-    }
-
-    private void printListOfTasks() {
-        task.printListOfTasks(tasks);
-    }
-
-    private void printListOfSubtasks(int id) {
-        epic.printListOfSubtasks(epics.get(id - 1));
     }
 
     //-----------------------------------------------------------------------------------------------------------------
@@ -162,13 +152,16 @@ public class TaskManagerMain {
             String taskTypeCommand = scanner.next();
             switch (taskTypeCommand) {
                 case "1":
-                    createTask();
+                    tasks.add(task.createTask());
                     break;
                 case "2":
-                    createEpic();
+                    epics.add(epic.createEpic());
                     break;
                 case "3":
-                    addSubtask();
+                    epic.printListOfEpics(epics);
+                    System.out.println("Выберите номер нужного эпика");
+                    int id = scanner.nextInt();
+                    epic.addSubtask(epics.get(id - 1));
                     break;
                 default:
                     System.out.println("Введена неверная команда, повторите ввод");
@@ -177,66 +170,63 @@ public class TaskManagerMain {
         }
     }
 
-    private void createTask() {
-        System.out.println("Название:");
-        String name = scanner.nextLine();
-        System.out.println("Описание");
-        String description = scanner.nextLine();
-        System.out.println("Статус задачи");
+    //-----------------------------------------------------------------------------------------------------------------
+
+    public void updateById() {
         while (true) {
-            String conditionType = scanner.next();
-            switch (conditionType) {
-                case "NEW":
-                    condition = Condition.NEW;
+            printTaskTypeMenu();
+            String taskTypeCommand = scanner.next();
+            switch (taskTypeCommand) {
+                case "1":
+                    System.out.println("Введите id задачи:");
+                    int taskId = scanner.nextInt();
+                    tasks.set(taskId - 1, task.updateTask());
                     break;
-                case "IN_PROGRESS":
-                    condition = Condition.IN_PROGRESS;
+                case "2":
+                    System.out.println("Введите id эпика:");
+                    int epicId = scanner.nextInt();
+                    epics.set(epicId - 1, epic.updateEpic(epics.get(epicId - 1)));
                     break;
-                case "DONE":
-                    condition = Condition.DONE;
+                case "3":
+                    System.out.println("Введите id эпика из которого желаете получить информацию о подзадаче:");
+                    int epicSubtaskId = scanner.nextInt();
+                    epic.updateSubtask(epics.get(epicSubtaskId - 1));
                     break;
                 default:
-                    System.out.println("Введен неверный статус");
+                    System.out.println("Введена неверная команда, повторите ввод");
                     break;
             }
         }
-        tasks.add(new Task(name, description, condition));
-    }
-
-    private void createEpic() {
-        System.out.println("Название:");
-        String name = scanner.nextLine();
-        System.out.println("Описание");
-        String description = scanner.nextLine();
-        System.out.println("Статус эпика");
-        while (true) {
-            String conditionType = scanner.next();
-            switch (conditionType) {
-                case "NEW":
-                    condition = Condition.NEW;
-                    break;
-                case "IN_PROGRESS":
-                    condition = Condition.IN_PROGRESS;
-                    break;
-                case "DONE":
-                    condition = Condition.DONE;
-                    break;
-                default:
-                    System.out.println("Введен неверный статус");
-                    break;
-            }
-        }
-        epics.add(new Epic(name, description, condition));
-    }
-
-    private void addSubtask() {
-        epic.printListOfEpics(epics);
-        System.out.println("Выберите номер нужного эпика");
-        int id = scanner.nextInt();
-        epic.addSubtask(epics.get(id - 1));
     }
 
     //-----------------------------------------------------------------------------------------------------------------
+
+    public void deleteById() {
+        while (true) {
+            printTaskTypeMenu();
+            String taskTypeCommand = scanner.next();
+            switch (taskTypeCommand) {
+                case "1":
+                    System.out.println("Введите id задачи:");
+                    int taskId = scanner.nextInt();
+                    tasks.remove(taskId - 1);
+                    break;
+                case "2":
+                    System.out.println("Введите id эпика:");
+                    int epicId = scanner.nextInt();
+                    epics.remove(epicId - 1);
+                    break;
+                case "3":
+                    System.out.println("Введите id эпика у которого желаете удалить подзадачу:");
+                    int epicSubtaskId = scanner.nextInt();
+                    epic.deleteById(epics.get(epicSubtaskId - 1));
+                    break;
+                default:
+                    System.out.println("Введена неверная команда, повторите ввод");
+                    break;
+            }
+        }
+    }
 
 }
 
