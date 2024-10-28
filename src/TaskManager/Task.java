@@ -7,9 +7,13 @@ public class Task {
     private String name;
     private String description;
     private Condition condition;
-    Scanner scanner;
+    Scanner scanner = new Scanner(System.in);
 
     //-----------------------------------Constructors------------------------------------------------------------------
+
+    public Task() {
+
+    }
 
     public Task(Scanner scanner) {
         this.scanner = scanner;
@@ -23,8 +27,12 @@ public class Task {
 
     //-------------------------------------Getters and Setters---------------------------------------------------------
 
-    public String getName() {
-        return name;
+    public String getName(Task task) {
+        return task.name;
+    }
+
+    public String getDescription(Task task) {
+        return task.description;
     }
 
     public Condition getCondition(Task task) {
@@ -37,7 +45,7 @@ public class Task {
         int index = 0;
         for (Task task : tasks) {
             index++;
-            System.out.println(index + ". " + task.getName());
+            System.out.println(index + ". " + task.getName(task));
         }
     }
 
@@ -45,12 +53,19 @@ public class Task {
         tasks.clear();
     }
 
+    public void printTaskById (Task task) {
+        System.out.println("Название: " + getName(task) + "\n" +
+                "Описание: " + getDescription(task) + "\n" +
+                "Статус: " + getCondition(task));
+    }
+
     public Task createTask() {
+        scanner.nextLine();
         System.out.println("Название:");
         String name = scanner.nextLine();
-        System.out.println("Описание");
+        System.out.println("Описание:");
         String description = scanner.nextLine();
-        System.out.println("Статус задачи");
+        System.out.println("Статус задачи:");
         do {
             String conditionType = scanner.next();
             switch (conditionType) {
@@ -73,10 +88,11 @@ public class Task {
 
     public Task updateTask() {
         System.out.println("Введите новое название:");
+        scanner.nextLine();
         String name = scanner.nextLine();
-        System.out.println("Введите новое описание");
+        System.out.println("Введите новое описание:");
         String description = scanner.nextLine();
-        System.out.println("Введите новый статус задачи");
+        System.out.println("Введите новый статус задачи:");
         do {
             String conditionType = scanner.next();
             switch (conditionType) {

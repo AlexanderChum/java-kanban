@@ -7,9 +7,9 @@ public class Epic {
     private String name;
     private String description;
     private Condition condition;
-    private ArrayList<Task> subtasks = null;
+    private ArrayList<Task> subtasks = new ArrayList<>();
     Scanner scanner;
-    Task task = new Task(scanner);
+    Task task = new Task();
 
     //-----------------------------------Constructors------------------------------------------------------------------
 
@@ -23,7 +23,7 @@ public class Epic {
         this.condition = condition;
     }
 
-    public Epic (String name, String description, Condition condition, ArrayList<Task> subtasks) {
+    public Epic(String name, String description, Condition condition, ArrayList<Task> subtasks) {
         this.name = name;
         this.description = description;
         this.condition = condition;
@@ -32,8 +32,16 @@ public class Epic {
 
     //-------------------------------------Getters and Setters---------------------------------------------------------
 
-    public String getName() {
-        return name;
+    public String getName(Epic epic) {
+        return epic.name;
+    }
+
+    public String getDescription(Epic epic) {
+        return epic.name;
+    }
+
+    public Condition getCondition(Epic epic) {
+        return epic.condition;
     }
 
     public ArrayList<Task> getSubtask(Epic epic) {
@@ -50,15 +58,16 @@ public class Epic {
             if (task.getCondition(subtask).equals((Condition.DONE))) {
                 doneCount++;
             }
-            if (progressCount == 0 && doneCount == 0) {
-                this.condition = Condition.NEW;
-            } else if (progressCount > 0 || doneCount >0) {
-                this.condition = Condition.IN_PROGRESS;
-                if (doneCount == subtasks.size()) {
-                    this.condition = Condition.DONE;
-                }
+        }
+        if (progressCount == 0 && doneCount == 0) {
+            epic.condition = Condition.NEW;
+        } else if (progressCount > 0 || doneCount > 0) {
+            epic.condition = Condition.IN_PROGRESS;
+            if (doneCount == subtasks.size()) {
+                epic.condition = Condition.DONE;
             }
         }
+
     }
 
     //--------------------------------------Class Methods--------------------------------------------------------------
@@ -67,7 +76,7 @@ public class Epic {
         int index = 0;
         for (Epic epic : epics) {
             index++;
-            System.out.println(index + ". " + epic.getName());
+            System.out.println(index + ". " + epic.getName(epic));
         }
     }
 
@@ -87,20 +96,27 @@ public class Epic {
 
     //------------------------------------------
 
-    public void getSubtaskById (Epic epic) {
+    public void printEpicById(Epic epic) {
+        System.out.println("Название: " + getName(epic) + "\n" +
+                "Описание: " + getDescription(epic) + "\n" +
+                "Статус: " + getCondition(epic));
+    }
+
+    public void getSubtaskById(Epic epic) {
         System.out.println("Введите id подзадачи который хотите получить");
         int subtaskId = scanner.nextInt();
-        System.out.println(getSubtask(epic).get(subtaskId - 1));
+        task.printTaskById(getSubtask(epic).get(subtaskId - 1));
     }
 
     //------------------------------------------
 
     public Epic createEpic() {
         System.out.println("Название:");
+        scanner.nextLine();
         String name = scanner.nextLine();
-        System.out.println("Описание");
+        System.out.println("Описание:");
         String description = scanner.nextLine();
-        System.out.println("Статус эпика");
+        System.out.println("Для нового эпика статус всегда NEW");
         condition = Condition.NEW;
         return new Epic(name, description, condition);
     }
@@ -114,8 +130,9 @@ public class Epic {
 
     public Epic updateEpic(Epic epic) {
         System.out.println("Введите новое название:");
+        scanner.nextLine();
         this.name = scanner.nextLine();
-        System.out.println("Введите новое описание");
+        System.out.println("Введите новое описание:");
         this.description = scanner.nextLine();
         System.out.println("Смена статуса вручную для эпика не предусмотрена");
         Epic newEpic = new Epic(name, description, Condition.NEW, getSubtask(epic));

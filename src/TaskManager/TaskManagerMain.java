@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TaskManagerMain {
-    Scanner scanner = new Scanner(System.in);
-    ArrayList<Task> tasks = new ArrayList<>();
-    ArrayList<Epic> epics = new ArrayList<>();
-    Task task = new Task(scanner);
-    Epic epic = new Epic(scanner);
+    static Scanner scanner = new Scanner(System.in);
+    static ArrayList<Task> tasks = new ArrayList<>();
+    static ArrayList<Epic> epics = new ArrayList<>();
+    static Task task = new Task(scanner);
+    static Epic epic = new Epic(scanner);
 
-    public void taskManagerMain() {
+    public static void taskManagerMain() {
         while (true) {
             printMenu();
             String command = scanner.next();
@@ -44,7 +44,7 @@ public class TaskManagerMain {
 
     //-----------------------------------------------------------------------------------------------------------------
 
-    private void printMenu() {
+    private static void printMenu() {
         System.out.println("""
                 Введите команду для менеджера задач
                 1. Получить список задач выбранного типа
@@ -57,7 +57,7 @@ public class TaskManagerMain {
                 """);
     }
 
-    private void printTaskTypeMenu() {
+    private static void printTaskTypeMenu() {
         System.out.println("""
                 Введите номер типа задачи для продолжения
                 1. Обычная задача
@@ -68,7 +68,7 @@ public class TaskManagerMain {
 
     //-----------------------------------------------------------------------------------------------------------------
 
-    private void printListByType() {
+    private static void printListByType() {
         while (true) {
             printTaskTypeMenu();
             String taskTypeCommand = scanner.next();
@@ -88,12 +88,13 @@ public class TaskManagerMain {
                     System.out.println("Введена неверная команда, повторите ввод");
                     break;
             }
+            break;
         }
     }
 
     //-----------------------------------------------------------------------------------------------------------------
 
-    public void deleteAllTasks() {
+    private static void deleteAllTasks() {
         while (true) {
             printTaskTypeMenu();
             String taskTypeCommand = scanner.next();
@@ -112,12 +113,13 @@ public class TaskManagerMain {
                     System.out.println("Введена неверная команда, повторите ввод");
                     break;
             }
+            break;
         }
     }
 
     //-----------------------------------------------------------------------------------------------------------------
 
-    public void getById() {
+    private static void getById() {
         while (true) {
             printTaskTypeMenu();
             String taskTypeCommand = scanner.next();
@@ -125,12 +127,12 @@ public class TaskManagerMain {
                 case "1":
                     System.out.println("Введите id задачи:");
                     int taskId = scanner.nextInt();
-                    System.out.println(tasks.get(taskId - 1));
+                    task.printTaskById(tasks.get(taskId - 1));
                     break;
                 case "2":
                     System.out.println("Введите id эпика:");
                     int epicId = scanner.nextInt();
-                    System.out.println(epics.get(epicId - 1));
+                    epic.printEpicById(epics.get(epicId - 1));
                     break;
                 case "3":
                     System.out.println("Введите id эпика из которого желаете получить информацию о подзадаче:");
@@ -141,12 +143,13 @@ public class TaskManagerMain {
                     System.out.println("Введена неверная команда, повторите ввод");
                     break;
             }
+            break;
         }
     }
 
     //-----------------------------------------------------------------------------------------------------------------
 
-    private void createObjectTask() {
+    private static void createObjectTask() {
         while (true) {
             printTaskTypeMenu();
             String taskTypeCommand = scanner.next();
@@ -167,12 +170,13 @@ public class TaskManagerMain {
                     System.out.println("Введена неверная команда, повторите ввод");
                     break;
             }
+            break;
         }
     }
 
     //-----------------------------------------------------------------------------------------------------------------
 
-    public void updateById() {
+    private static void updateById() {
         while (true) {
             printTaskTypeMenu();
             String taskTypeCommand = scanner.next();
@@ -196,12 +200,13 @@ public class TaskManagerMain {
                     System.out.println("Введена неверная команда, повторите ввод");
                     break;
             }
+            break;
         }
     }
 
     //-----------------------------------------------------------------------------------------------------------------
 
-    public void deleteById() {
+    private static void deleteById() {
         while (true) {
             printTaskTypeMenu();
             String taskTypeCommand = scanner.next();
@@ -225,8 +230,8 @@ public class TaskManagerMain {
                     System.out.println("Введена неверная команда, повторите ввод");
                     break;
             }
+            break;
         }
     }
-
 }
 
