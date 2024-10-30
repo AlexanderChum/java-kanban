@@ -1,20 +1,39 @@
-/*Не зная какие именно фичи будут добавляться в будущем - предварительно вынес основной код в отдельный пакет который
-работает непосредственно с задачами.
-
-Сделал небольшой интерфейс по принципу "а что если бы моя мама пользовалась этим", который так же помогал мне при
-отладке. По этой причине у методов можно встретить (id - 1) при передаче параметров.
-По отзывам других ребят о данной проектной работе не стал реализовывать методы trim(), проверки на "дурака",
-etc, так как в этот раз с нами работает "идеальный" пользователь.
-
-Методы разместил в соответствии с заданием, в том же порядке
- */
-
-import TaskManager.TaskManagerMain;
+import models.Epic;
+import models.Status;
+import models.Subtask;
+import models.Task;
 
 public class Main {
 
     public static void main(String[] args) {
-        new TaskManagerMain();
-        TaskManagerMain.taskManagerMain();
+        TaskManager taskManager = new TaskManager();
+        Task task = new Task();
+        Epic epic = new Epic();
+        Subtask subtask = new Subtask();
+
+        Task task1 = new Task("Первый таск", "Описание1");
+        Task task2 = new Task("Второй таск","Описание2");
+        Epic epic1 = new Epic("Первый эпик","Описание3");
+        Subtask subtask1 = new Subtask("Первый подтаск", "Описание4", 3);
+        Subtask subtask2 = new Subtask("Второй подтаск", "Описание5", 3);
+
+        taskManager.createTask(task1);
+        taskManager.createTask(task2);
+        taskManager.createEpic(epic1);
+        taskManager.createSubtask(subtask1);
+        taskManager.createSubtask(subtask2);
+
+        taskManager.printAllTasks();
+        taskManager.printAllEpics();
+        taskManager.printSubtasksByEpicID(3);
+
+
+        Subtask subtask3 = new Subtask("Первый подтаск", "Описание6", Status.DONE, 3);
+
+        taskManager.updateSubtask(4, subtask3);
+
+        taskManager.printAllSubtasks();
+        taskManager.printEpicById(3);
+
     }
 }
