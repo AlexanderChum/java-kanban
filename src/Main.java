@@ -22,12 +22,19 @@ public class Main {
         taskManager.createSubtask(subtask2);
 
         Subtask subtask3 = new Subtask("Первый подтаск", "Описание6", Status.DONE, 3);
+        Epic epic2 = new Epic("Первый эпик","Описание7");
 
         taskManager.updateSubtask(4, subtask3);
-
-        Epic epic2 = new Epic("Первый эпик","Описание7");
         System.out.println(taskManager.returnAllEpics());
         taskManager.updateEpic(3 ,epic2);
         System.out.println(taskManager.returnAllEpics());
+        System.out.println(taskManager.returnSubtasksByEpicID(3));
+        System.out.println(taskManager.returnSubtaskById(4));
+
+        taskManager.deleteAllEpics();
+        System.out.println(taskManager.returnAllSubtasks());
+
+        taskManager.deleteTaskById(1);
+        System.out.println(taskManager.returnAllTasks());
     }
 }
