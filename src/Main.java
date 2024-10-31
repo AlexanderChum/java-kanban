@@ -2,14 +2,12 @@ import models.Epic;
 import models.Status;
 import models.Subtask;
 import models.Task;
+import service.TaskManager;
 
 public class Main {
 
     public static void main(String[] args) {
         TaskManager taskManager = new TaskManager();
-        Task task = new Task();
-        Epic epic = new Epic();
-        Subtask subtask = new Subtask();
 
         Task task1 = new Task("Первый таск", "Описание1");
         Task task2 = new Task("Второй таск","Описание2");
@@ -23,17 +21,13 @@ public class Main {
         taskManager.createSubtask(subtask1);
         taskManager.createSubtask(subtask2);
 
-        taskManager.printAllTasks();
-        taskManager.printAllEpics();
-        taskManager.printSubtasksByEpicID(3);
-
-
         Subtask subtask3 = new Subtask("Первый подтаск", "Описание6", Status.DONE, 3);
 
         taskManager.updateSubtask(4, subtask3);
 
-        taskManager.printAllSubtasks();
-        taskManager.printEpicById(3);
-
+        Epic epic2 = new Epic("Первый эпик","Описание7");
+        System.out.println(taskManager.returnAllEpics());
+        taskManager.updateEpic(3 ,epic2);
+        System.out.println(taskManager.returnAllEpics());
     }
 }
