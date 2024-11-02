@@ -3,19 +3,20 @@ package models;
 import java.util.ArrayList;
 
 public class Epic extends Task{
-    private ArrayList<Integer> subtasksId = new ArrayList<>();
+    private final ArrayList<Integer> subtasksId = new ArrayList<>();
 
-    public Epic(String name, String description){
+    public Epic(String name, String description) {
         super(name, description);
         this.setStatus(Status.NEW);
     }
 
-    public ArrayList<Integer> getSubtasksId() {
-        return this.subtasksId;
+    public Epic(Integer id, String name, String description) {
+        super(name, description);
+        this.setId(id);
     }
 
-    public void setSubtasksId(ArrayList<Integer> subtasksId) {
-        this.subtasksId = subtasksId;
+    public ArrayList<Integer> getSubtasksId() {
+        return this.subtasksId;
     }
 
     public void addSubtaskId (int subtaskId) {
@@ -28,5 +29,16 @@ public class Epic extends Task{
 
     public void clearSubtasksList () {
         subtasksId.clear();
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", status=" + getStatus() +
+                ", id=" + getId() +
+                ", subtasksId=" + getSubtasksId() +
+                '}';
     }
 }

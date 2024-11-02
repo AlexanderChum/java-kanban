@@ -1,10 +1,10 @@
 package models;
 
 public class Task {
+    private int id;
     private String name;
     private String description;
     private Status status;
-    private int generatedId;
 
     public Task(String name, String description) {
         this.name = name;
@@ -12,7 +12,8 @@ public class Task {
         this.status = Status.NEW;
     }
 
-    public Task(String name, String description, Status status) {
+    public Task(Integer id, String name, String description, Status status) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
@@ -45,11 +46,11 @@ public class Task {
     }
 
     public int getId() {
-        return generatedId;
+        return id;
     }
 
     public void setId(int generatedId) {
-        this.generatedId = generatedId;
+        this.id = generatedId;
     }
 
     //--------------------------------------
@@ -60,7 +61,7 @@ public class Task {
                 "name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", status=" + getStatus() +
-                ", generatedId=" + getId() +
+                ", id=" + getId() +
                 '}';
     }
 }
