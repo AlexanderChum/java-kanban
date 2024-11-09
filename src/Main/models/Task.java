@@ -1,4 +1,4 @@
-package models;
+package Main.models;
 
 public class Task {
     private int id;
@@ -58,10 +58,10 @@ public class Task {
     @Override
     public String toString() {
         return "Task{" +
-                "name='" + getName() + '\'' +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", status=" + getStatus() +
-                ", id=" + getId() +
                 '}';
     }
 }

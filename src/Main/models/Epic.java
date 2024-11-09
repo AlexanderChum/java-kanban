@@ -1,4 +1,4 @@
-package models;
+package Main.models;
 
 import java.util.ArrayList;
 
@@ -31,13 +31,15 @@ public class Epic extends Task{
         subtasksId.clear();
     }
 
+
     @Override
     public String toString() {
         return "Task{" +
-                "name='" + getName() + '\'' +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", status=" + getStatus() +
-                ", id=" + getId() +
+                ", status='" + getStatus() + '\'' +
+                ", id='" + getId() + '\'' +
                 ", subtasksId=" + getSubtasksId() +
                 '}';
     }
