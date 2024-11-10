@@ -21,7 +21,6 @@ class InMemoryTaskManagerTest {
     Subtask subtask2 = new Subtask("Второй подтаск", "Описание5", 2);
     Subtask subtask3 = new Subtask(4,"Первый подтаск", "Описание6", Status.DONE, 2);
     Epic epic2 = new Epic(2,"Первый эпик","Описание7");
-    Subtask subtask4 = new Subtask(5, "Второй подтаск", "Описание8", Status.DONE, 2);
     Task taskForUpdate = new Task(1,"Третий таск", "Описание8",Status.IN_PROGRESS);
 
     @BeforeEach
