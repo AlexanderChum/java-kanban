@@ -1,10 +1,10 @@
-package Main;
+package main;
 
-import Main.models.Epic;
-import Main.models.Status;
-import Main.models.Subtask;
-import Main.models.Task;
-import Main.service.*;
+import main.models.Epic;
+import main.models.Status;
+import main.models.Subtask;
+import main.models.Task;
+import main.service.*;
 
 public class Main {
 
@@ -25,6 +25,13 @@ public class Main {
         tMng.createTask(task2);
         tMng.createEpic(epic1);
         tMng.createSubtask(subtask1);
+        tMng.createSubtask(subtask2);
+        tMng.updateSubtask(subtask3);
+        System.out.println(epic1);
+        tMng.deleteSubtaskById(4);
+        System.out.println(epic1);
+
+
 
         tMng.getEpicById(3);
         tMng.getTaskById(1);

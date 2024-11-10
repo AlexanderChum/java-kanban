@@ -1,6 +1,6 @@
-package Main.service;
+package main.service;
 
-import Main.models.Task;
+import main.models.Task;
 
 import java.util.ArrayList;
 

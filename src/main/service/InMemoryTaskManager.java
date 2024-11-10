@@ -1,9 +1,9 @@
-package Main.service;
+package main.service;
 
-import Main.models.Epic;
-import Main.models.Status;
-import Main.models.Subtask;
-import Main.models.Task;
+import main.models.Epic;
+import main.models.Status;
+import main.models.Subtask;
+import main.models.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,11 +25,11 @@ public class InMemoryTaskManager implements TaskManager {
         if (!subtasksId.isEmpty()) {
             if (doneCount == subtasksId.size()) {
                 epics.get(epicId).setStatus(Status.DONE);
-            } else if (doneCount > 0 || progressCount > 0) {
+            } else if (doneCount > 0 | progressCount > 0) {
                 epics.get(epicId).setStatus(Status.IN_PROGRESS);
+            } else {
+                epics.get(epicId).setStatus(Status.NEW);
             }
-        } else {
-            epics.get(epicId).setStatus(Status.NEW);
         }
     }
 

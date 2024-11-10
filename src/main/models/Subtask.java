@@ -1,4 +1,4 @@
-package Main.models;
+package main.models;
 
 public class Subtask extends Task {
     private Integer epicId;

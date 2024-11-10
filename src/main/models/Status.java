@@ -1,4 +1,4 @@
-package Main.models;
+package main.models;
 
 public enum Status {
     NEW,
