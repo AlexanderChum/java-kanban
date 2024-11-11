@@ -2,7 +2,7 @@ package main.service;
 
 public class Managers {
 
-    public static TaskManager getDefaultTaskManager() {
+    public static TaskManager getDefault() {
         return new InMemoryTaskManager();
     }
 

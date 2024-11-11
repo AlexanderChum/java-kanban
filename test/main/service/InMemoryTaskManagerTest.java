@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 class InMemoryTaskManagerTest {
@@ -25,83 +26,74 @@ class InMemoryTaskManagerTest {
 
     @BeforeEach
     void tMngHashMapsRefresh() {
-        InMemoryTaskManager tMng = new InMemoryTaskManager();
+        tMng.deleteAllTasks();
+        tMng.deleteAllEpics();
+        tMng.deleteAllSubTasks();
+        tMng.createTask(task1);
+        tMng.createEpic(epic1);
+        tMng.createSubtask(subtask1);
+        tMng.createSubtask(subtask2);
+        tMng.createTask(task2);
     }
 
     @Test
     void createTask() {
-        tMng.createTask(task1);
-        Task testTask = tMng.getTaskById(1);
+        Task testTask = tMng.getAllTasks().getFirst();
         assertEquals(task1, testTask);
     }
 
     @Test
     void createEpic() {
-        tMng.createEpic(epic1);
-        Epic testEpic = tMng.getEpicById(1);
+        Epic testEpic = tMng.getAllEpics().getFirst();
         assertEquals(epic1, testEpic);
     }
 
     @Test
     void createSubtask() {
-        tMng.createTask(task1);
-        tMng.createEpic(epic1);
-        tMng.createSubtask(subtask1);
-        Subtask testSubtask = tMng.getSubtaskById(3);
+        Subtask testSubtask = tMng.getAllSubtasks().getFirst();
         assertEquals(subtask1, testSubtask);
     }
 
     @Test
     void createSubtaskIfZeroEpics() {
+        tMng.deleteAllEpics();
         tMng.createSubtask(subtask1);
-        assertTrue(tMng.subtasks.isEmpty());
+        assertTrue(tMng.getAllSubtasks().isEmpty());
     }
 
     @Test
     void deleteTaskById() {
-        tMng.createTask(task1);
-        tMng.createTask(task2);
-        tMng.deleteTaskById(1);
-        assertEquals(1, tMng.tasks.size());
-        Task testTask = tMng.getTaskById(2);
+        tMng.deleteTaskById(task1.getId());
+        assertEquals(1, tMng.getAllTasks().size());
+        Task testTask = tMng.getTaskById(task2.getId());
         assertEquals(task2, testTask);
-        assertFalse(tMng.tasks.containsValue(task1));
+        assertFalse(tMng.getAllTasks().contains(task1));
     }
 
     @Test
     void deleteEpicById() {
-        tMng.createEpic(epic1);
         tMng.createEpic(epic2);
-        tMng.deleteEpicById(1);
-        assertEquals(1, tMng.epics.size());
-        Epic testEpic = tMng.epics.get(2);
-        assertEquals(epic2, testEpic);
-        assertFalse(tMng.epics.containsValue(epic1));
+        tMng.deleteEpicById(epic1.getId());
+        assertEquals(1, tMng.getAllEpics().size());
+        assertFalse(tMng.getAllEpics().contains(epic1));
+        assertTrue(tMng.getAllEpics().contains(epic2));
     }
 
     @Test
     void deleteSubtaskById() {
-        tMng.createTask(task1);
-        tMng.createEpic(epic1);
-        tMng.createSubtask(subtask1);
-        tMng.createSubtask(subtask2);
-        tMng.deleteSubtaskById(3);
-        assertEquals(1, tMng.subtasks.size());
-        Subtask testSubtask = tMng.getSubtaskById(4);
+        tMng.deleteSubtaskById(subtask1.getId());
+        assertEquals(1, tMng.getAllSubtasks().size());
+        Subtask testSubtask = tMng.getSubtaskById(subtask2.getId());
         assertEquals(subtask2, testSubtask);
-        assertFalse(tMng.subtasks.containsValue(subtask1));
+        assertFalse(tMng.getAllSubtasks().contains(subtask1));
     }
 
     @Test
     void deleteSubtaskByIdEpicStatusCheck() {
-        tMng.createTask(task1);
-        tMng.createEpic(epic1);
-        tMng.createSubtask(subtask1);
-        tMng.createSubtask(subtask2);
         tMng.updateSubtask(subtask3);
-        Epic testEpic = tMng.getEpicById(2);
+        Epic testEpic = tMng.getEpicById(epic1.getId());
         assertEquals(Status.IN_PROGRESS, testEpic.getStatus());
-        tMng.deleteSubtaskById(4);
+        tMng.deleteSubtaskById(subtask2.getId());
         assertEquals(Status.NEW, testEpic.getStatus());
     }
 
@@ -110,29 +102,21 @@ class InMemoryTaskManagerTest {
         tMng.createTask(task1);
         tMng.createTask(task2);
         tMng.deleteAllTasks();
-        assertEquals(0, tMng.tasks.size());
-        assertFalse(tMng.tasks.containsValue(task2));
+        assertEquals(0, tMng.getAllTasks().size());
+        assertFalse(tMng.getAllTasks().contains(task2));
     }
 
     @Test
     void deleteAllSubTasks() {
-        tMng.createTask(task1);
-        tMng.createEpic(epic1);
-        tMng.createSubtask(subtask1);
-        tMng.createSubtask(subtask2);
-        assertEquals(2, tMng.subtasks.size());
+        assertEquals(2, tMng.getAllSubtasks().size());
         tMng.deleteAllSubTasks();
-        assertTrue(tMng.subtasks.isEmpty());
+        assertTrue(tMng.getAllSubtasks().isEmpty());
     }
 
     @Test
     void deleteAllSubtasksEpicStatusCheck() {
-        tMng.createTask(task1);
-        tMng.createEpic(epic1);
-        tMng.createSubtask(subtask1);
-        tMng.createSubtask(subtask2);
         tMng.updateSubtask(subtask3);
-        Epic testEpic = tMng.getEpicById(2);
+        Epic testEpic = tMng.getEpicById(epic1.getId());
         assertEquals(Status.IN_PROGRESS, testEpic.getStatus());
         tMng.deleteAllSubTasks();
         assertEquals(Status.NEW, testEpic.getStatus());
@@ -140,30 +124,21 @@ class InMemoryTaskManagerTest {
 
     @Test
     void deleteAllEpics() {
-        tMng.createTask(task1);
-        tMng.createEpic(epic1);
         tMng.createEpic(epic2);
-        assertEquals(2, tMng.epics.size());
+        assertEquals(2, tMng.getAllEpics().size());
         tMng.deleteAllEpics();
-        assertTrue(tMng.epics.isEmpty());
+        assertTrue(tMng.getAllEpics().isEmpty());
     }
 
     @Test
     void deleteAllEpicsWithSubtasks() {
-        tMng.createTask(task1);
-        tMng.createEpic(epic1);
-        tMng.createSubtask(subtask1);
-        tMng.createSubtask(subtask2);
-        assertEquals(2, tMng.subtasks.size());
+        assertEquals(2, tMng.getAllSubtasks().size());
         tMng.deleteAllEpics();
-        assertTrue(tMng.subtasks.isEmpty());
+        assertTrue(tMng.getAllSubtasks().isEmpty());
     }
 
     @Test
     void getAllTasks() {
-        tMng.createTask(task1);
-        tMng.createTask(task2);
-        tMng.createEpic(epic1);
         ArrayList<Task> listOfTestTasks = tMng.getAllTasks();
         assertTrue(listOfTestTasks.contains(task1));
         assertTrue(listOfTestTasks.contains(task2));
@@ -172,9 +147,8 @@ class InMemoryTaskManagerTest {
 
     @Test
     void getAllEpics() {
-        tMng.createEpic(epic1);
         tMng.createEpic(epic2);
-        assertEquals(2, tMng.epics.size());
+        assertEquals(2, tMng.getAllEpics().size());
         ArrayList<Epic> listOfTestEpics = tMng.getAllEpics();
         assertTrue(listOfTestEpics.contains(epic1));
         assertTrue(listOfTestEpics.contains(epic2));
@@ -182,11 +156,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     void getAllSubtasks() {
-        tMng.createTask(task1);
-        tMng.createEpic(epic1);
-        tMng.createSubtask(subtask1);
-        tMng.createSubtask(subtask2);
-        assertEquals(2, tMng.subtasks.size());
+        assertEquals(2, tMng.getAllSubtasks().size());
         ArrayList<Subtask> listOfTestSubtasks = tMng.getAllSubtasks();
         assertTrue(listOfTestSubtasks.contains(subtask1));
         assertTrue(listOfTestSubtasks.contains(subtask2));
@@ -194,9 +164,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     void getTaskById() {
-        tMng.createTask(task1);
-        tMng.createTask(task2);
-        Task testTask = tMng.getTaskById(2);
+        Task testTask = tMng.getTaskById(task2.getId());
         assertEquals(task2, testTask);
     }
 
@@ -204,15 +172,14 @@ class InMemoryTaskManagerTest {
     void getTaskByWrongId() {
         tMng.createTask(task1);
         tMng.createEpic(epic1);
-        Task testTask = tMng.getTaskById(2);
+        Task testTask = tMng.getTaskById(epic1.getId());
         assertNull(testTask);
     }
 
     @Test
     void getEpicById() {
-        tMng.createEpic(epic1);
         tMng.createEpic(epic2);
-        Epic testEpic = tMng.getEpicById(2);
+        Epic testEpic = tMng.getEpicById(epic2.getId());
         assertEquals(epic2, testEpic);
     }
 
@@ -228,11 +195,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     void getSubtasksByEpicID() {
-        tMng.createTask(task1);
-        tMng.createEpic(epic1);
-        tMng.createSubtask(subtask1);
-        tMng.createSubtask(subtask2);
-        ArrayList<Subtask> listOfTestSubtasks = tMng.getSubtasksByEpicID(2);
+        List<Subtask> listOfTestSubtasks = tMng.getSubtasksByEpicID(2);
         assertEquals(2, listOfTestSubtasks.size());
         assertTrue(listOfTestSubtasks.contains(subtask1));
         assertTrue(listOfTestSubtasks.contains(subtask2));
@@ -241,22 +204,16 @@ class InMemoryTaskManagerTest {
 
     @Test
     void updateTask() {
-        tMng.createTask(task1);
-        tMng.createTask(task2);
         tMng.updateTask(taskForUpdate);
-        Task testTask = tMng.getTaskById(1);
+        Task testTask = tMng.getTaskById(task1.getId());
         assertEquals(Status.IN_PROGRESS, testTask.getStatus());
         assertEquals("Третий таск", testTask.getName());
     }
 
     @Test
     void updateEpic() {
-        tMng.createTask(task1);
-        tMng.createEpic(epic1);
-        tMng.createSubtask(subtask1);
-        tMng.createSubtask(subtask2);
         tMng.updateEpic(epic2);
-        Epic testEpic = tMng.getEpicById(2);
+        Epic testEpic = tMng.getEpicById(epic1.getId());
         ArrayList<Integer> subtasksId = testEpic.getSubtasksId();
         assertEquals(2, subtasksId.size());
         assertTrue(subtasksId.contains(subtask1.getId()));
@@ -276,5 +233,17 @@ class InMemoryTaskManagerTest {
         tMng.updateSubtask(subtask3);
         assertEquals(Status.IN_PROGRESS, testEpic.getStatus());
         assertEquals(Status.DONE, testSubtask.getStatus());
+    }
+
+    @Test
+    void getTaskByWrongIdGetNull() {
+        Task task = tMng.getTaskById(epic1.getId());
+        assertNull(task);
+    }
+
+    @Test
+    void updateTaskByWrongId() {
+        tMng.deleteAllTasks();
+        assertNull(tMng.updateTask(taskForUpdate));
     }
 }

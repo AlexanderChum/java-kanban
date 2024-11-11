@@ -5,14 +5,15 @@ import main.models.Subtask;
 import main.models.Task;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public interface TaskManager {
 
-    void createTask(Task task);
+    Task createTask(Task task);
 
-    void createEpic(Epic epic);
+    Epic createEpic(Epic epic);
 
-    void createSubtask(Subtask subtask);
+    Subtask createSubtask(Subtask subtask);
 
     void deleteTaskById(int taskId);
 
@@ -40,9 +41,11 @@ public interface TaskManager {
 
     ArrayList<Subtask> getSubtasksByEpicID(int epicId);
 
-    void updateTask(Task newTask);
+    Task updateTask(Task newTask);
 
-    void updateEpic(Epic newEpic);
+    Epic updateEpic(Epic newEpic);
 
-    void updateSubtask(Subtask newSubtask);
+    Subtask updateSubtask(Subtask newSubtask);
+
+    LinkedList<Task> getHistory();
 }

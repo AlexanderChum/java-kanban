@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        InMemoryTaskManager tMng = (InMemoryTaskManager) Managers.getDefaultTaskManager();
+        InMemoryTaskManager tMng = (InMemoryTaskManager) Managers.getDefault();
 
         Task task1 = new Task("Первый таск", "Описание1");
         Task task2 = new Task("Второй таск","Описание2");
@@ -21,7 +21,7 @@ public class Main {
         Epic epic2 = new Epic(3,"Первый эпик","Описание7");
         Subtask subtask4 = new Subtask(5, "Второй подтаск", "Описание8", Status.DONE, 3);
 
-        tMng.createTask(task1);
+        System.out.println(tMng.createTask(task1));
         tMng.createTask(task2);
         tMng.createEpic(epic1);
         tMng.createSubtask(subtask1);

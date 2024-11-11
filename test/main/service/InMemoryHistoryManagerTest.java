@@ -6,7 +6,7 @@ import main.models.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,29 +31,29 @@ class InMemoryHistoryManagerTest {
 
     @Test
     void getHistory() {
-        hMng.addTaskToViewed(task1);
-        hMng.addTaskToViewed(epic1);
-        ArrayList<Task> testTaskList= hMng.getHistory();
+        hMng.add(task1);
+        hMng.add(epic1);
+        LinkedList<Task> testTaskList= hMng.getHistory();
         assertNotNull(testTaskList);
         assertEquals(2, testTaskList.size());
     }
 
     @Test
     void addTaskToViewedCheckMaxSize() {
-        hMng.addTaskToViewed(task1);
-        hMng.addTaskToViewed(task2);
-        hMng.addTaskToViewed(task3);
-        hMng.addTaskToViewed(task4);
-        hMng.addTaskToViewed(epic1);
-        hMng.addTaskToViewed(epic2);
-        hMng.addTaskToViewed(subtask1);
-        hMng.addTaskToViewed(subtask2);
-        hMng.addTaskToViewed(subtask3);
-        hMng.addTaskToViewed(subtask4);
-        hMng.addTaskToViewed(task1);
-        hMng.addTaskToViewed(task1);
-        hMng.addTaskToViewed(task1);
-        ArrayList<Task> testList = hMng.getHistory();
+        hMng.add(task1);
+        hMng.add(task2);
+        hMng.add(task3);
+        hMng.add(task4);
+        hMng.add(epic1);
+        hMng.add(epic2);
+        hMng.add(subtask1);
+        hMng.add(subtask2);
+        hMng.add(subtask3);
+        hMng.add(subtask4);
+        hMng.add(task1);
+        hMng.add(task1);
+        hMng.add(task1);
+        LinkedList<Task> testList = hMng.getHistory();
         assertEquals(10, testList.size());
     }
 }
