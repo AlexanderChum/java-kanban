@@ -6,7 +6,7 @@ import main.models.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,7 +33,7 @@ class InMemoryHistoryManagerTest {
     void getHistory() {
         hMng.add(task1);
         hMng.add(epic1);
-        LinkedList<Task> testTaskList= hMng.getHistory();
+        List<Task> testTaskList= hMng.getHistory();
         assertNotNull(testTaskList);
         assertEquals(2, testTaskList.size());
     }
@@ -53,7 +53,7 @@ class InMemoryHistoryManagerTest {
         hMng.add(task1);
         hMng.add(task1);
         hMng.add(task1);
-        LinkedList<Task> testList = hMng.getHistory();
+        List<Task> testList = hMng.getHistory();
         assertEquals(10, testList.size());
     }
 }

@@ -115,21 +115,22 @@ public class InMemoryTaskManager implements TaskManager {
     //--------------------------------------------------
 
     @Override
-    public ArrayList<Task> getAllTasks() {
+    public List<Task> getAllTasks() {
         return new ArrayList<>(tasks.values());
     }
 
     @Override
-    public ArrayList<Epic> getAllEpics() {
+    public List<Epic> getAllEpics() {
         return new ArrayList<>(epics.values());
     }
 
     @Override
-    public ArrayList<Subtask> getAllSubtasks() {
+    public List<Subtask> getAllSubtasks() {
         return new ArrayList<>(subtasks.values());
     }
 
     //----------------------------------------------------
+    //переписать централизованную проверку для add(null)
 
     @Override
     public Task getTaskById(int taskId) {
@@ -156,8 +157,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<Subtask> getSubtasksByEpicID(int epicId) {
-        ArrayList<Subtask> subtasksList = new ArrayList<>();
+    public List<Subtask> getSubtasksByEpicID(int epicId) {
+        List<Subtask> subtasksList = new ArrayList<>();
         for (Integer subtaskId : epics.get(epicId).getSubtasksId()) {
             subtasksList.add(subtasks.get(subtaskId));
         }
@@ -200,7 +201,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public LinkedList<Task> getHistory() {
+    public List<Task> getHistory() {
         return historyManager.getHistory();
     }
 }

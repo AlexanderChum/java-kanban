@@ -139,7 +139,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     void getAllTasks() {
-        ArrayList<Task> listOfTestTasks = tMng.getAllTasks();
+        List<Task> listOfTestTasks = tMng.getAllTasks();
         assertTrue(listOfTestTasks.contains(task1));
         assertTrue(listOfTestTasks.contains(task2));
         assertFalse(listOfTestTasks.contains(epic1));
@@ -149,7 +149,7 @@ class InMemoryTaskManagerTest {
     void getAllEpics() {
         tMng.createEpic(epic2);
         assertEquals(2, tMng.getAllEpics().size());
-        ArrayList<Epic> listOfTestEpics = tMng.getAllEpics();
+        List<Epic> listOfTestEpics = tMng.getAllEpics();
         assertTrue(listOfTestEpics.contains(epic1));
         assertTrue(listOfTestEpics.contains(epic2));
     }
@@ -157,7 +157,7 @@ class InMemoryTaskManagerTest {
     @Test
     void getAllSubtasks() {
         assertEquals(2, tMng.getAllSubtasks().size());
-        ArrayList<Subtask> listOfTestSubtasks = tMng.getAllSubtasks();
+        List<Subtask> listOfTestSubtasks = tMng.getAllSubtasks();
         assertTrue(listOfTestSubtasks.contains(subtask1));
         assertTrue(listOfTestSubtasks.contains(subtask2));
     }

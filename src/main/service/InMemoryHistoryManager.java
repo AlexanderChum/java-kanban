@@ -2,22 +2,22 @@ package main.service;
 
 import main.models.Task;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
     private final List<Task> viewedTasks = new LinkedList<>();
+    private final static int maxHistorySize = 10;
 
     @Override
-    public LinkedList<Task> getHistory() {
-        return new LinkedList<>(viewedTasks);
+    public List<Task> getHistory() {
+        return new ArrayList<>(viewedTasks);
     }
 
+    @Override
     public void add(Task task) {
-        int maxListSize = 10; /*один из вариантов размещения переменной макс размера, насколько лучше/хуже такой вариант
-        чем размещение как поле класса? В будущем из минусов вижу только то, что данную переменную не применить в других
-        методах, какие могут быть еще?*/
-        if (viewedTasks.size() == maxListSize) {
+        if (viewedTasks.size() == maxHistorySize) {
             viewedTasks.removeFirst();
             viewedTasks.add(task);
         } else {
