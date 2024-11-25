@@ -24,4 +24,9 @@ public class InMemoryHistoryManager implements HistoryManager {
             viewedTasks.add(task);
         }
     }
+
+    @Override
+    public void remove(int id) {
+
+    }
 }
