@@ -13,12 +13,12 @@ public class Main {
         InMemoryHistoryManager hMng = (InMemoryHistoryManager) tMng.getHistoryManager();
 
         Task task1 = new Task("Первый таск", "Описание1");
-        Task task2 = new Task("Второй таск","Описание2");
-        Epic epic1 = new Epic("Первый эпик","Описание3");
+        Task task2 = new Task("Второй таск", "Описание2");
+        Epic epic1 = new Epic("Первый эпик", "Описание3");
         Subtask subtask1 = new Subtask("Первый подтаск", "Описание4", 3);
         Subtask subtask2 = new Subtask("Второй подтаск", "Описание5", 3);
-        Subtask subtask3 = new Subtask("Третий подтаск", "Описание6",  3);
-        Epic epic2 = new Epic("Первый эпик","Описание7");
+        Subtask subtask3 = new Subtask("Третий подтаск", "Описание6", 3);
+        Epic epic2 = new Epic("Первый эпик", "Описание7");
 
         tMng.createTask(task1);
         tMng.createTask(task2);

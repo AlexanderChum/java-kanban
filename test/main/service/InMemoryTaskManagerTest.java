@@ -11,18 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 class InMemoryTaskManagerTest {
 
     InMemoryTaskManager tMng = new InMemoryTaskManager();
 
     Task task1 = new Task("Первый таск", "Описание1");
-    Task task2 = new Task("Второй таск","Описание2");
-    Epic epic1 = new Epic("Первый эпик","Описание3");
+    Task task2 = new Task("Второй таск", "Описание2");
+    Epic epic1 = new Epic("Первый эпик", "Описание3");
     Subtask subtask1 = new Subtask("Первый подтаск", "Описание4", 2);
     Subtask subtask2 = new Subtask("Второй подтаск", "Описание5", 2);
-    Subtask subtask3 = new Subtask(4,"Первый подтаск", "Описание6", Status.DONE, 2);
-    Epic epic2 = new Epic(2,"Первый эпик","Описание7");
-    Task taskForUpdate = new Task(1,"Третий таск", "Описание8",Status.IN_PROGRESS);
+    Subtask subtask3 = new Subtask(4, "Первый подтаск", "Описание6", Status.DONE, 2);
+    Epic epic2 = new Epic(2, "Первый эпик", "Описание7");
+    Task taskForUpdate = new Task(1, "Третий таск", "Описание8", Status.IN_PROGRESS);
 
     @BeforeEach
     void tMngHashMapsRefresh() {

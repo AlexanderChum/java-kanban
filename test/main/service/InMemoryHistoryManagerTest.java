@@ -14,11 +14,11 @@ class InMemoryHistoryManagerTest {
     InMemoryTaskManager tMng = new InMemoryTaskManager();
 
     Task task1 = new Task("Первый таск", "Описание1");
-    Task task2 = new Task("Второй таск","Описание2");
-    Task task3 = new Task("Третий таск","Описание3");
-    Task task4 = new Task("Четвертый таск","Описание4");
-    Epic epic1 = new Epic("Первый эпик","Описание5");
-    Epic epic2 = new Epic("Второй эпик","Описание6");
+    Task task2 = new Task("Второй таск", "Описание2");
+    Task task3 = new Task("Третий таск", "Описание3");
+    Task task4 = new Task("Четвертый таск", "Описание4");
+    Epic epic1 = new Epic("Первый эпик", "Описание5");
+    Epic epic2 = new Epic("Второй эпик", "Описание6");
     Subtask subtask1 = new Subtask("Первый подтаск", "Описание4", 3);
     Subtask subtask2 = new Subtask("Второй подтаск", "Описание5", 3);
     Subtask subtask3 = new Subtask("Первый подтаск", "Описание6", 3);

@@ -2,7 +2,6 @@ package main.service;
 
 import main.models.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface HistoryManager {

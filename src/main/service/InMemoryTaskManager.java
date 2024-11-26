@@ -205,7 +205,8 @@ public class InMemoryTaskManager implements TaskManager {
             epic.setName(newEpic.getName());
             epic.setDescription(newEpic.getDescription());
             return epics.get(newEpic.getId());
-        } return null;
+        }
+        return null;
     }
 
     @Override
