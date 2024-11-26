@@ -14,6 +14,10 @@ public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, Subtask> subtasks = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
+    public HistoryManager getHistoryManager() {
+        return this.historyManager;
+    }
+
     private void epicStatusUpdate(int epicId) {
         int progressCount = 0, doneCount = 0;
         ArrayList<Integer> subtasksId = epics.get(epicId).getSubtasksId();
@@ -72,19 +76,23 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteTaskById(int taskId) {
+        historyManager.remove(taskId);
         tasks.remove(taskId);
     }
 
     @Override
     public void deleteEpicById(int epicId) {
         for (Integer subtaskId : epics.get(epicId).getSubtasksId()) {
+            historyManager.remove(subtaskId);
             subtasks.remove(subtaskId);
         }
+        historyManager.remove(epicId);
         epics.remove(epicId);
     }
 
     @Override
     public void deleteSubtaskById(int subtaskId) {
+        historyManager.remove(subtaskId);
         int epicId = subtasks.get(subtaskId).getEpicId();
         epics.get(epicId).removeSubtaskId(subtaskId);
         subtasks.remove(subtaskId);
@@ -94,11 +102,17 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllTasks() {
+        for (Task task : tasks.values()) {
+            historyManager.remove(task.getId());
+        }
         tasks.clear();
     }
 
     @Override
     public void deleteAllSubTasks() {
+        for (Subtask subtask : subtasks.values()) {
+            historyManager.remove(subtask.getId());
+        }
         for (Epic epic : epics.values()) {
             epic.clearSubtasksList();
             epic.setStatus(Status.NEW);
@@ -108,6 +122,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllEpics() {
+        for (Epic epic : epics.values()) {
+            historyManager.removeEpicWithSubtasks(epic.getSubtasksId());
+            historyManager.remove(epic.getId());
+        }
         subtasks.clear();
         epics.clear();
     }

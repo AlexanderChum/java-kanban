@@ -2,6 +2,7 @@ package main.service;
 
 import main.models.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface HistoryManager {
@@ -10,5 +11,7 @@ public interface HistoryManager {
 
     void add(Task task);
 
-    void remove (int id);
+    void remove(int id);
+
+    void removeEpicWithSubtasks(List<Integer> list);
 }
