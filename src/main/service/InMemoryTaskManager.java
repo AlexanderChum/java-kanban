@@ -129,7 +129,7 @@ public class InMemoryTaskManager implements TaskManager {
             historyManager.remove(epic.getId());
         }
         subtasks.clear();
-        epics.clear(); 
+        epics.clear();
     }
 
     //--------------------------------------------------
