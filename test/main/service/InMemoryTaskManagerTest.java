@@ -19,21 +19,24 @@ class InMemoryTaskManagerTest {
     Task task1 = new Task("Первый таск", "Описание1");
     Task task2 = new Task("Второй таск", "Описание2");
     Epic epic1 = new Epic("Первый эпик", "Описание3");
-    Subtask subtask1 = new Subtask("Первый подтаск", "Описание4", 2);
-    Subtask subtask2 = new Subtask("Второй подтаск", "Описание5", 2);
-    Subtask subtask3 = new Subtask(4, "Первый подтаск", "Описание6", Status.DONE, 2);
-    Epic epic2 = new Epic(2, "Первый эпик", "Описание7");
-    Task taskForUpdate = new Task(1, "Третий таск", "Описание8", Status.IN_PROGRESS);
+    Subtask subtask1;
+    Subtask subtask2;
+    Subtask subtask3;
+    Epic epic2;
+    Task taskForUpdate;
 
     @BeforeEach
-    void tMngHashMapsRefresh() {
-        tMng.deleteAllTasks();
-        tMng.deleteAllEpics();
-        tMng.deleteAllSubTasks();
+    void setTest() {
         tMng.createTask(task1);
         tMng.createEpic(epic1);
+        subtask1 = new Subtask("Первый подтаск", "Описание4", epic1.getId());
+        subtask2 = new Subtask("Второй подтаск", "Описание5", epic1.getId());
+        epic2 = new Epic(epic1.getId(), "Первый эпик", "Описание7");
+        taskForUpdate = new Task(task1.getId(), "Третий таск", "Описание8", Status.IN_PROGRESS);
         tMng.createSubtask(subtask1);
         tMng.createSubtask(subtask2);
+        subtask3 = new Subtask(subtask1.getId(), "Первый подтаск", "Описание6", Status.DONE,
+                epic1.getId());
         tMng.createTask(task2);
     }
 
@@ -94,7 +97,7 @@ class InMemoryTaskManagerTest {
         tMng.updateSubtask(subtask3);
         Epic testEpic = tMng.getEpicById(epic1.getId());
         assertEquals(Status.IN_PROGRESS, testEpic.getStatus());
-        tMng.deleteSubtaskById(subtask2.getId());
+        tMng.deleteSubtaskById(subtask3.getId());
         assertEquals(Status.NEW, testEpic.getStatus());
     }
 
@@ -190,13 +193,13 @@ class InMemoryTaskManagerTest {
         tMng.createEpic(epic1);
         tMng.createSubtask(subtask1);
         tMng.createSubtask(subtask2);
-        Subtask testSubtask = tMng.getSubtaskById(3);
+        Subtask testSubtask = tMng.getSubtaskById(subtask1.getId());
         assertEquals(subtask1, testSubtask);
     }
 
     @Test
     void getSubtasksByEpicID() {
-        List<Subtask> listOfTestSubtasks = tMng.getSubtasksByEpicID(2);
+        List<Subtask> listOfTestSubtasks = tMng.getSubtasksByEpicID(epic1.getId());
         assertEquals(2, listOfTestSubtasks.size());
         assertTrue(listOfTestSubtasks.contains(subtask1));
         assertTrue(listOfTestSubtasks.contains(subtask2));
@@ -224,12 +227,8 @@ class InMemoryTaskManagerTest {
 
     @Test
     void updateSubtaskWithEpicStatusCheck() {
-        tMng.createTask(task1);
-        tMng.createEpic(epic1);
-        tMng.createSubtask(subtask1);
-        tMng.createSubtask(subtask2);
-        Epic testEpic = tMng.getEpicById(2);
-        Subtask testSubtask = tMng.getSubtaskById(4);
+        Epic testEpic = tMng.getEpicById(epic1.getId());
+        Subtask testSubtask = tMng.getSubtaskById(subtask3.getId());
         assertEquals(Status.NEW, testEpic.getStatus());
         tMng.updateSubtask(subtask3);
         assertEquals(Status.IN_PROGRESS, testEpic.getStatus());

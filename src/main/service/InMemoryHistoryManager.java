@@ -1,6 +1,7 @@
 package main.service;
 
 import main.models.Task;
+import main.models.Node;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -15,31 +16,12 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public List<Task> getHistory() {
-        List<Task> resultList = new ArrayList<>();
-        Node node = head;
-        while (node.getNext() != null) {
-            resultList.add((Task) node.getTask());
-            node = node.getNext();
-        }
-        resultList.add((Task) node.getTask());
-        return resultList;
+        return new ArrayList<>(getTasks());
     }
 
     @Override
     public void add(Task task) {
-        Node newNode = new Node(task);
-        if (viewedTasks.containsKey(task.getId())) {
-            remove(task.getId());
-        }
-        if (head == null) {
-            head = newNode;
-            tail = newNode;
-        } else {
-            newNode.setPrev(tail);
-            tail.setNext(newNode);
-            tail = newNode;
-        }
-        viewedTasks.put(task.getId(), newNode);
+        viewedTasks.put(task.getId(), linkLast(task));
     }
 
     @Override
@@ -64,41 +46,30 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    //------------------------------------------------------
-
-    private class Node {
-        public Task task;
-        public Node next;
-        public Node prev;
-
-        public Node(Task task) {
-            this.task = task;
-            this.next = null;
-            this.prev = null;
+    private Node linkLast(Task task) {
+        Node newNode = new Node(task);
+        if (viewedTasks.containsKey(task.getId())) {
+            remove(task.getId());
         }
-
-        public Task getTask() {
-            return task;
+        if (head == null) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            newNode.setPrev(tail);
+            tail.setNext(newNode);
+            tail = newNode;
         }
+        return newNode;
+    }
 
-        public void setTask(Task task) {
-            this.task = task;
+    private List<Task> getTasks() {
+        List<Task> resultList = new ArrayList<>();
+        Node node = head;
+        while (node.getNext() != null) {
+            resultList.add(node.getTask());
+            node = node.getNext();
         }
-
-        public Node getNext() {
-            return next;
-        }
-
-        public void setNext(Node next) {
-            this.next = next;
-        }
-
-        public Node getPrev() {
-            return prev;
-        }
-
-        public void setPrev(Node prev) {
-            this.prev = prev;
-        }
+        resultList.add(node.getTask());
+        return resultList;
     }
 }
