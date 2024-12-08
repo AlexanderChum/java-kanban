@@ -11,49 +11,44 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
-    InMemoryHistoryManager hMng = new InMemoryHistoryManager();
+    InMemoryTaskManager tMng = new InMemoryTaskManager();
 
     Task task1 = new Task("Первый таск", "Описание1");
-    Task task2 = new Task("Второй таск","Описание2");
-    Task task3 = new Task("Третий таск","Описание3");
-    Task task4 = new Task("Четвертый таск","Описание4");
-    Epic epic1 = new Epic("Первый эпик","Описание5");
-    Epic epic2 = new Epic("Второй эпик","Описание6");
-    Subtask subtask1 = new Subtask("Первый подтаск", "Описание4", 3);
-    Subtask subtask2 = new Subtask("Второй подтаск", "Описание5", 3);
-    Subtask subtask3 = new Subtask("Первый подтаск", "Описание6", 3);
-    Subtask subtask4 = new Subtask("Второй подтаск", "Описание8", 3);
+    Task task2 = new Task("Второй таск", "Описание2");
+    Task task3 = new Task("Третий таск", "Описание3");
 
     @BeforeEach
     void setTest() {
-        InMemoryHistoryManager hMng = new InMemoryHistoryManager();
+        tMng.createTask(task1);
+        tMng.createTask(task2);
+        tMng.getTaskById(task1.getId());
+        tMng.getTaskById(task2.getId());
     }
 
     @Test
     void getHistory() {
-        hMng.add(task1);
-        hMng.add(epic1);
-        List<Task> testTaskList= hMng.getHistory();
+        List<Task> testTaskList = tMng.getHistory();
         assertNotNull(testTaskList);
         assertEquals(2, testTaskList.size());
     }
 
     @Test
-    void addTaskToViewedCheckMaxSize() {
-        hMng.add(task1);
-        hMng.add(task2);
-        hMng.add(task3);
-        hMng.add(task4);
-        hMng.add(epic1);
-        hMng.add(epic2);
-        hMng.add(subtask1);
-        hMng.add(subtask2);
-        hMng.add(subtask3);
-        hMng.add(subtask4);
-        hMng.add(task1);
-        hMng.add(task1);
-        hMng.add(task1);
-        List<Task> testList = hMng.getHistory();
-        assertEquals(10, testList.size());
+    void addedSameTaskTwiceAndRemoveCheck() {
+        tMng.getTaskById(task1.getId());
+        List<Task> testTaskList = tMng.getHistory();
+        assertEquals(2, testTaskList.size());
+        assertEquals(task2, testTaskList.get(0));
+    }
+
+    @Test
+    void orderOfAddedTasksAndAddedTwice() {
+        tMng.createTask(task3);
+        tMng.getTaskById(task3.getId());
+        tMng.getTaskById(task1.getId());
+        List<Task> testTaskList = tMng.getHistory();
+        assertEquals(3, testTaskList.size());
+        assertEquals(task2, testTaskList.get(0));
+        assertEquals(task3, testTaskList.get(1));
+        assertEquals(task1, testTaskList.get(2));
     }
 }
