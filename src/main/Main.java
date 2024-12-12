@@ -5,11 +5,16 @@ import main.models.Subtask;
 import main.models.Task;
 import main.service.*;
 
+import java.io.File;
+
 public class Main {
 
     public static void main(String[] args) {
 
-        InMemoryTaskManager tMng = (InMemoryTaskManager) Managers.getDefault();
+        String filePath = "E:\\coding\\projects\\IDEA projects\\testFile.csv";
+        File file = new File(filePath);
+
+        FileBackedTaskManager tMng = FileBackedTaskManager.loadFromFile(file);
         InMemoryHistoryManager hMng = (InMemoryHistoryManager) tMng.getHistoryManager();
 
         Task task1 = new Task("Первый таск", "Описание1");
@@ -31,7 +36,7 @@ public class Main {
         tMng.createSubtask(subtask3);
         tMng.createEpic(epic2);
 
-        tMng.getTaskById(task2.getId());
+       /* tMng.getTaskById(task2.getId());
         tMng.getTaskById(task1.getId());
         tMng.getSubtaskById(subtask1.getId());
         System.out.println(tMng.getHistory());
@@ -48,5 +53,7 @@ public class Main {
 
         tMng.deleteAllEpics();
         System.out.println(tMng.getHistory());
+
+        tMng.deleteAllTasks();*/
     }
 }

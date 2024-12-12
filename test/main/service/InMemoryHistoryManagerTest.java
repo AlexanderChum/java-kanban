@@ -1,7 +1,5 @@
 package main.service;
 
-import main.models.Epic;
-import main.models.Subtask;
 import main.models.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
