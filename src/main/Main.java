@@ -11,10 +11,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String filePath = "E:\\coding\\projects\\IDEA projects\\testFile.csv";
-        File file = new File(filePath);
-
-        FileBackedTaskManager tMng = FileBackedTaskManager.loadFromFile(file);
+        FileBackedTaskManager tMng = Managers.getDefaultFileManager();
         InMemoryHistoryManager hMng = (InMemoryHistoryManager) tMng.getHistoryManager();
 
         Task task1 = new Task("Первый таск", "Описание1");

@@ -11,11 +11,9 @@ import java.nio.file.Files;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File fileForWork;
-    private final InMemoryTaskManager tMng;
 
     public FileBackedTaskManager(File file) {
         this.fileForWork = file;
-        this.tMng = (InMemoryTaskManager) Managers.getDefault();
     }
 
     public static FileBackedTaskManager loadFromFile(File fileForWork) {
@@ -51,12 +49,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 return task;
             case "EPIC":
                 Epic epic = new Epic(name, description);
-                super.createTask(epic);
+                super.createEpic(epic);
                 epic.setStatus((stringToStatus(stringStatus)));
                 return epic;
             case "SUBTASK":
                 Subtask subtask = new Subtask(name, description, Integer.parseInt(separatedLine[5]));
                 super.createSubtask(subtask);
+                //перепроверить почему при создании сабтаски в этом методе не присваивается id
+                subtask.setId(Integer.parseInt(separatedLine[0]));
                 subtask.setStatus(stringToStatus(stringStatus));
                 return subtask;
             default:
@@ -117,12 +117,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
 
         if (super.tasks.containsKey(localId)) {
-            return String.format("%s,TASK,%s,%s,%s", localId, localName, localStatus, localDescription);
+            return String.format("%s,%s,%s,%s,%s", localId, TypesOfTasks.TASK, localName,
+                    localStatus, localDescription);
         } else if (super.epics.containsKey(localId)) {
-            return String.format("%s,EPIC,%s,%s,%s", localId, localName, localStatus, localDescription);
+            return String.format("%s,%s,%s,%s,%s", localId, TypesOfTasks.EPIC, localName,
+                    localStatus, localDescription);
         } else {
-            return String.format("%s,SUBTASK,%s,%s,%s,%s", localId, localName, localStatus, localDescription,
-                    super.subtasks.get(localId).getEpicId());
+            return String.format("%s,%s,%s,%s,%s,%s", localId, TypesOfTasks.SUBTASK, localName,
+                    localStatus, localDescription, super.subtasks.get(localId).getEpicId());
         }
     }
 
