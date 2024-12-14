@@ -47,8 +47,6 @@ public class Main {
         System.out.println(tMng.getHistory());
 
         tMng.deleteAllEpics();
-        System.out.println(tMng.getHistory());
-
-        tMng.deleteAllTasks();*/
+        System.out.println(tMng.getHistory());*/
     }
 }
