@@ -36,23 +36,23 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private Task fromString(String s) {
         String[] separatedLine = s.split(",");
-        String taskType = separatedLine[1];
+        TypesOfTasks taskType = stringToType(separatedLine[1]);
         String name = separatedLine[2];
         String stringStatus = separatedLine[3];
         String description = separatedLine[4];
 
         switch (taskType) {
-            case "TASK":
+            case TypesOfTasks.TASK:
                 Task task = new Task(name, description);
                 super.createTask(task);
                 task.setStatus(stringToStatus(stringStatus));
                 return task;
-            case "EPIC":
+            case TypesOfTasks.EPIC:
                 Epic epic = new Epic(name, description);
                 super.createEpic(epic);
                 epic.setStatus((stringToStatus(stringStatus)));
                 return epic;
-            case "SUBTASK":
+            case TypesOfTasks.SUBTASK:
                 Subtask subtask = new Subtask(name, description, Integer.parseInt(separatedLine[5]));
                 super.createSubtask(subtask);
                 //перепроверить почему при создании сабтаски в этом методе не присваивается id
@@ -65,16 +65,21 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private Status stringToStatus(String line) {
-        switch (line) {
-            case "NEW":
-                return Status.NEW;
-            case "IN_PROGRESS":
-                return Status.IN_PROGRESS;
-            case "DONE":
-                return Status.DONE;
-            default:
-                return Status.NEW;
-        }
+        return switch (line) {
+            case "NEW" -> Status.NEW;
+            case "IN_PROGRESS" -> Status.IN_PROGRESS;
+            case "DONE" -> Status.DONE;
+            default -> throw new TypeMismatchException("Такого типа статусов нет");
+        };
+    }
+
+    private TypesOfTasks stringToType(String line) {
+        return switch (line) {
+            case "TASK" -> TypesOfTasks.TASK;
+            case "EPIC" -> TypesOfTasks.EPIC;
+            case "SUBTASK" -> TypesOfTasks.SUBTASK;
+            default -> throw new TypeMismatchException("Такого типа задач нет");
+        };
     }
 
     public void saveToFile() {

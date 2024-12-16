@@ -5,6 +5,7 @@ public class Task {
     private String name;
     private String description;
     private Status status;
+    private TypesOfTasks type;
 
     public Task(String name, String description) {
         this.name = name;
@@ -51,6 +52,14 @@ public class Task {
 
     public void setId(int generatedId) {
         this.id = generatedId;
+    }
+
+    public TypesOfTasks getType() {
+        return type;
+    }
+
+    public void setType(TypesOfTasks type) {
+        this.type = type;
     }
 
     //--------------------------------------
