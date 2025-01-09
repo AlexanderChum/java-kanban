@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        InMemoryTaskManager tMng = (InMemoryTaskManager) Managers.getDefault();
+        FileBackedTaskManager tMng = Managers.getDefaultFileManager();
         InMemoryHistoryManager hMng = (InMemoryHistoryManager) tMng.getHistoryManager();
 
         Task task1 = new Task("Первый таск", "Описание1");
@@ -31,7 +31,7 @@ public class Main {
         tMng.createSubtask(subtask3);
         tMng.createEpic(epic2);
 
-        tMng.getTaskById(task2.getId());
+       /* tMng.getTaskById(task2.getId());
         tMng.getTaskById(task1.getId());
         tMng.getSubtaskById(subtask1.getId());
         System.out.println(tMng.getHistory());
@@ -47,6 +47,6 @@ public class Main {
         System.out.println(tMng.getHistory());
 
         tMng.deleteAllEpics();
-        System.out.println(tMng.getHistory());
+        System.out.println(tMng.getHistory());*/
     }
 }
