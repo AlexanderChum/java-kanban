@@ -1,4 +1,4 @@
-package main.models;
+package main.exceptions;
 
 public class ManagerLoadException extends RuntimeException {
 

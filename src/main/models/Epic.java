@@ -1,9 +1,13 @@
 package main.models;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Epic extends Task {
     private final ArrayList<Integer> subtasksId = new ArrayList<>();
+    private int epicDuration;
+    private LocalDateTime epicStartTime;
+    private LocalDateTime epicEndTime;
 
     public Epic(String name, String description) {
         super(name, description);
@@ -13,6 +17,10 @@ public class Epic extends Task {
     public Epic(Integer id, String name, String description) {
         super(name, description);
         this.setId(id);
+    }
+
+    public Epic(String name, String description, String duration, String startTime, String endTime) {
+        super(name, description, duration, startTime, endTime);
     }
 
     public ArrayList<Integer> getSubtasksId() {
@@ -31,6 +39,30 @@ public class Epic extends Task {
         subtasksId.clear();
     }
 
+    public void setEpicDuration(Integer duration) {
+        this.epicDuration = duration;
+    }
+
+    public int getEpicDuration() {
+        return this.epicDuration;
+    }
+
+    public void setEpicStartTime(LocalDateTime startTime) {
+        this.epicStartTime = startTime;
+    }
+
+    public LocalDateTime getEpicStartTime() {
+        return this.epicStartTime;
+    }
+
+    public void setEpicEndTime(LocalDateTime endTime) {
+        this.epicEndTime = endTime;
+    }
+
+    public LocalDateTime getEpicEndTime() {
+        return this.epicEndTime;
+    }
+
 
     @Override
     public String toString() {
@@ -39,8 +71,9 @@ public class Epic extends Task {
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", status='" + getStatus() + '\'' +
-                ", id='" + getId() + '\'' +
-                ", subtasksId=" + getSubtasksId() +
+                ", subtasksId='" + getSubtasksId() + '\'' +
+                ", startTime='" + getStartTime() + '\'' +
+                ", endTime=" + getEndTime() +
                 '}';
     }
 }

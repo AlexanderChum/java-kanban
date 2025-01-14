@@ -1,5 +1,6 @@
 package main.service;
 
+import main.exceptions.*;
 import main.models.*;
 
 import java.io.BufferedReader;
@@ -8,9 +9,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.format.DateTimeFormatter;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File fileForWork;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public FileBackedTaskManager(File file) {
         this.fileForWork = file;
@@ -40,10 +43,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String name = separatedLine[2];
         String stringStatus = separatedLine[3];
         String description = separatedLine[4];
+        String duration = separatedLine[5];
+        String startTime = separatedLine[6];
+        String endTime = separatedLine[7];
 
         switch (taskType) {
             case TypesOfTasks.TASK:
-                Task task = new Task(name, description);
+                Task task = new Task(name, description, duration, startTime, endTime);
                 super.createTask(task);
                 task.setStatus(stringToStatus(stringStatus));
                 return task;
@@ -53,7 +59,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 epic.setStatus((stringToStatus(stringStatus)));
                 return epic;
             case TypesOfTasks.SUBTASK:
-                Subtask subtask = new Subtask(name, description, Integer.parseInt(separatedLine[5]));
+                Subtask subtask = new Subtask(name, description, duration, startTime, endTime,
+                        Integer.parseInt(separatedLine[8]));
                 super.createSubtask(subtask);
                 //перепроверить почему при создании сабтаски в этом методе не присваивается id
                 subtask.setId(Integer.parseInt(separatedLine[0]));
@@ -88,7 +95,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void save() {
         try (BufferedWriter bw = Files.newBufferedWriter(fileForWork.toPath(), StandardCharsets.UTF_8)) {
-            bw.write("id,type,name,status,description,epic");
+            bw.write("id,type,name,status,description,duration(mins),startTime,endTime,epicId");
             bw.newLine();
             for (int i = 1; i <= super.getMaxCreatedId(); i++) {
                 if (super.tasks.containsKey(i)) {
@@ -120,16 +127,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         } else {
             localStatus = "DONE";
         }
+        String localDuration = String.valueOf(task.getDuration());
+        String localStartTime = task.getStartTime().format(formatter);
+        String localEndTime = task.getEndTime().format(formatter);
 
         if (super.tasks.containsKey(localId)) {
-            return String.format("%s,%s,%s,%s,%s", localId, TypesOfTasks.TASK, localName,
-                    localStatus, localDescription);
+            return String.format("%s,%s,%s,%s,%s,%s,%s,%s", localId, TypesOfTasks.TASK, localName,
+                    localStatus, localDescription, localDuration, localStartTime, localEndTime);
         } else if (super.epics.containsKey(localId)) {
-            return String.format("%s,%s,%s,%s,%s", localId, TypesOfTasks.EPIC, localName,
-                    localStatus, localDescription);
+            return String.format("%s,%s,%s,%s,%s,%s,%s,%s", localId, TypesOfTasks.EPIC, localName,
+                    localStatus, localDescription, localDuration, localStartTime, localEndTime);
         } else {
-            return String.format("%s,%s,%s,%s,%s,%s", localId, TypesOfTasks.SUBTASK, localName,
-                    localStatus, localDescription, super.subtasks.get(localId).getEpicId());
+            return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s", localId, TypesOfTasks.SUBTASK, localName,
+                    localStatus, localDescription, localDuration, localStartTime, localEndTime,
+                    super.subtasks.get(localId).getEpicId());
         }
     }
 
