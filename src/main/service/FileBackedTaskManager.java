@@ -9,11 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.time.format.DateTimeFormatter;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File fileForWork;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public FileBackedTaskManager(File file) {
         this.fileForWork = file;
@@ -46,6 +44,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String duration = separatedLine[5];
         String startTime = separatedLine[6];
         String endTime = separatedLine[7];
+        if (startTime.equals("Время начала не задано")) startTime = null;
+        if (endTime.equals("Время конца не задано")) endTime = null;
 
         switch (taskType) {
             case TypesOfTasks.TASK:
@@ -65,6 +65,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 //перепроверить почему при создании сабтаски в этом методе не присваивается id
                 subtask.setId(Integer.parseInt(separatedLine[0]));
                 subtask.setStatus(stringToStatus(stringStatus));
+                super.epicTimeUpdates(subtask.getEpicId());
                 return subtask;
             default:
                 throw new TypeMismatchException("Такого типа задач нет");
@@ -120,6 +121,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String localName = task.getName();
         String localDescription = task.getDescription();
         String localStatus;
+        String localStartTime;
+        String localEndTime;
         if (task.getStatus().equals(Status.NEW)) {
             localStatus = "NEW";
         } else if (task.getStatus().equals(Status.IN_PROGRESS)) {
@@ -128,8 +131,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             localStatus = "DONE";
         }
         String localDuration = String.valueOf(task.getDuration());
-        String localStartTime = task.getStartTime().format(formatter);
-        String localEndTime = task.getEndTime().format(formatter);
+        if (task.getStartTime() != null) {
+            localStartTime = task.getStartTime().format(Task.FORMATTER);
+        } else localStartTime = "Время начала не задано";
+        if (task.getEndTime() != null) {
+            localEndTime = task.getEndTime().format(Task.FORMATTER);
+        } else localEndTime = "Время конца не задано";
 
         if (super.tasks.containsKey(localId)) {
             return String.format("%s,%s,%s,%s,%s,%s,%s,%s", localId, TypesOfTasks.TASK, localName,

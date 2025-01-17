@@ -13,12 +13,14 @@ public class Task {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
         this.status = Status.NEW;
         this.duration = 0;
-        this.startTime = LocalDateTime.now();
+        this.startTime = null;
     }
 
     public Task(Integer id, String name, String description, Status status) {
@@ -33,14 +35,16 @@ public class Task {
         this.description = description;
         this.status = Status.NEW;
         this.duration = duration;
-        this.startTime = LocalDateTime.now();
+        this.startTime = null;
     }
 
     public Task(String name, String description, String startTime) {
         this.name = name;
         this.description = description;
         this.status = Status.NEW;
-        this.startTime = LocalDateTime.parse(startTime, formatter);
+        if (startTime != null) {
+            this.startTime = LocalDateTime.parse(startTime, FORMATTER);
+        } else this.startTime = null;
     }
 
     public Task(String name, String description, Integer duration, String startTime) {
@@ -48,7 +52,9 @@ public class Task {
         this.description = description;
         this.status = Status.NEW;
         this.duration = duration;
-        this.startTime = LocalDateTime.parse(startTime, formatter);
+        if (startTime != null) {
+            this.startTime = LocalDateTime.parse(startTime, FORMATTER);
+        } else this.startTime = null;
     }
 
     public Task(String name, String description, String duration, String startTime, String endTime) {
@@ -56,8 +62,12 @@ public class Task {
         this.description = description;
         this.status = Status.NEW;
         this.duration = Integer.parseInt(duration);
-        this.startTime = LocalDateTime.parse(startTime, formatter);
-        this.endTime = LocalDateTime.parse(endTime, formatter);
+        if (startTime != null) {
+            this.startTime = LocalDateTime.parse(startTime, FORMATTER);
+        } else this.startTime = null;
+        if (endTime != null) {
+            this.endTime = LocalDateTime.parse(endTime, FORMATTER);
+        } else this.endTime = null;
     }
 
     //---------------------------------------
@@ -115,7 +125,9 @@ public class Task {
     }
 
     public LocalDateTime getEndTime() {
-        return startTime.plusMinutes(duration);
+        if (this.startTime != null) {
+            return startTime.plusMinutes(duration);
+        } else return null;
     }
 
     public void setDuration(Integer duration) {
@@ -127,8 +139,6 @@ public class Task {
     }
 
     //--------------------------------------
-
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Override
     public String toString() {

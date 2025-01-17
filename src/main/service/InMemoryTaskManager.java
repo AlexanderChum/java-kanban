@@ -2,7 +2,6 @@ package main.service;
 
 import main.models.*;
 
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
@@ -13,8 +12,17 @@ public class InMemoryTaskManager implements TaskManager {
     protected final Map<Integer, Epic> epics = new HashMap<>();
     protected final Map<Integer, Subtask> subtasks = new HashMap<>();
     protected final HistoryManager historyManager = Managers.getDefaultHistory();
-    private final Set<Task> tasksInTimeOrder = new TreeSet<>(Comparator.comparing(Task::getStartTime));
-    DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+    private final Set<Task> tasksInTimeOrder = new TreeSet<>((task1, task2) -> {
+        if ((task1.getStartTime() == null) || (task1.getStartTime() == null && task2.getStartTime() == null)) {
+            return 1;
+        }
+        if (task2.getStartTime() == null) {
+            return -1;
+        }
+        return task1.getStartTime().compareTo(task2.getStartTime());
+    });
+
 
     public List<Task> getPrioritizedTasks() {
         return new ArrayList<>(tasksInTimeOrder);
@@ -59,9 +67,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (timeValidation(task)) {
             task.setId(createdId);
             tasks.put(createdId, task);
-            if (task.getDuration() != 0) {
-                tasksInTimeOrder.add(task);
-            }
+            tasksInTimeOrder.add(task);
             idGeneration();
             return task;
         } else return null;
@@ -69,12 +75,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Epic createEpic(Epic epic) {
-        if (timeValidation(epic)) {
-            epic.setId(createdId);
-            epics.put(createdId, epic);
-            idGeneration();
-            return epic;
-        } else return null;
+        epic.setId(createdId);
+        epics.put(createdId, epic);
+        idGeneration();
+        return epic;
     }
 
     @Override
@@ -82,9 +86,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (epics.containsKey(subtask.getEpicId()) && timeValidation(subtask)) {
             subtask.setId(createdId);
             subtasks.put(createdId, subtask);
-            if (subtask.getDuration() != 0) {
-                tasksInTimeOrder.add(subtask);
-            }
+            tasksInTimeOrder.add(subtask);
             epics.get(subtask.getEpicId()).addSubtaskId(createdId);
             epicStatusUpdate(subtask.getEpicId());
             epicTimeUpdates(subtask.getEpicId());
@@ -110,7 +112,6 @@ public class InMemoryTaskManager implements TaskManager {
             subtasks.remove(subtaskId);
         });
         historyManager.remove(epicId);
-        tasksInTimeOrder.remove(epics.get(epicId));
         epics.remove(epicId);
     }
 
@@ -151,12 +152,11 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllEpics() {
+        deleteAllSubTasks();
         epics.values().forEach(epic -> {
             epic.getSubtasksId().forEach(historyManager::remove);
             historyManager.remove(epic.getId());
-            tasksInTimeOrder.remove(epic);
         });
-        subtasks.clear();
         epics.clear();
     }
 
@@ -220,7 +220,10 @@ public class InMemoryTaskManager implements TaskManager {
             task.setName(newTask.getName());
             task.setDescription(newTask.getDescription());
             task.setStatus(newTask.getStatus());
-            return tasks.get(newTask.getId());
+            task.setDuration(newTask.getDuration());
+            task.setStartTime(newTask.getStartTime());
+            task.setEndTime(newTask.getEndTime());
+            return task;
         } else return null;
     }
 
@@ -230,7 +233,7 @@ public class InMemoryTaskManager implements TaskManager {
             Epic epic = epics.get(newEpic.getId());
             epic.setName(newEpic.getName());
             epic.setDescription(newEpic.getDescription());
-            return epics.get(newEpic.getId());
+            return epic;
         }
         return null;
     }
@@ -242,15 +245,18 @@ public class InMemoryTaskManager implements TaskManager {
             subtask.setName(newSubtask.getName());
             subtask.setDescription(newSubtask.getDescription());
             subtask.setStatus(newSubtask.getStatus());
+            subtask.setDuration(newSubtask.getDuration());
+            subtask.setStartTime(newSubtask.getStartTime());
+            subtask.setEndTime(newSubtask.getEndTime());
             epicStatusUpdate(newSubtask.getEpicId());
             epicTimeUpdates(newSubtask.getEpicId());
-            return subtasks.get(newSubtask.getId());
+            return subtask;
         } else return null;
     }
 
     //------------------------------------------------------
 
-    private void epicTimeUpdates(Integer epicId) {
+    protected void epicTimeUpdates(Integer epicId) {
         List<Integer> subtasksId = epics.get(epicId).getSubtasksId();
         updateEpicDuration(subtasksId, epicId);
         updateEpicStartTime(subtasksId, epicId);
@@ -264,7 +270,7 @@ public class InMemoryTaskManager implements TaskManager {
                 .mapToInt(id -> subtasks.get(id).getDuration())
                 .sum();
 
-        epics.get(epicId).setEpicDuration(duration);
+        epics.get(epicId).setDuration(duration);
     }
 
     @Override
@@ -276,7 +282,6 @@ public class InMemoryTaskManager implements TaskManager {
                 .orElse(null);
 
         epics.get(epicId).setEpicStartTime(startTime);
-
     }
 
     @Override
@@ -288,12 +293,11 @@ public class InMemoryTaskManager implements TaskManager {
                 .orElse(null);
 
         epics.get(epicId).setEpicEndTime(endTime);
-
     }
 
     @Override
     public boolean timeValidation(Task inputTask) {
-        if (!getPrioritizedTasks().isEmpty()) {
+        if (!getPrioritizedTasks().isEmpty() && inputTask.getStartTime() != null) {
             LocalDateTime inputTaskStartTime = inputTask.getStartTime();
             LocalDateTime inputTaskEndTime = inputTask.getEndTime();
 

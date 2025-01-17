@@ -19,7 +19,7 @@ class InMemoryTaskManagerTimeTests {
     Task task1 = new Task("Первый таск", "Описание1", 15, "2025-01-13 21:00");
     Task task2 = new Task("Второй таск", "Описание2", 15, "2025-01-13 21:10");
     Task task3 = new Task("Третий таск", "Описание3", 15, "2025-01-13 20:30");
-    Task task4 = new Task("Четвертый таск", "Описание4", "2025-01-13 21:00");
+    Task task4 = new Task("Четвертый таск", "Описание4");
     Epic epic1 = new Epic("Первый эпик", "Описание1");
     Subtask subtask1;
     Subtask subtask2;
@@ -49,11 +49,12 @@ class InMemoryTaskManagerTimeTests {
     }
 
     @Test
-    void taskWithoutDurationNotPrioritized() {
+    void taskWithoutDurationIsLast() {
         tMng.createTask(task3);
         tMng.createTask(task4);
         List<Task> result = tMng.getPrioritizedTasks();
-        assertEquals(2, result.size());
+        assertEquals(3, result.size());
+        assertEquals(task4, result.getLast());
     }
 
     @Test

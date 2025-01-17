@@ -1,7 +1,5 @@
 package main.models;
 
-import java.time.LocalDateTime;
-
 public class Subtask extends Task {
     private Integer epicId;
 
@@ -17,7 +15,7 @@ public class Subtask extends Task {
 
     public Subtask(String name, String description, Integer duration, Integer epicId) {
         super(name, description, duration);
-        this.setStartTime(LocalDateTime.now());
+        this.setStartTime(null);
         this.epicId = epicId;
     }
 
@@ -28,6 +26,7 @@ public class Subtask extends Task {
 
     public Subtask(String name, String description, String duration, String startTime, String endTime, Integer epicId) {
         super(name, description, duration, startTime, endTime);
+        this.epicId = epicId;
     }
 
     public int getEpicId() {
