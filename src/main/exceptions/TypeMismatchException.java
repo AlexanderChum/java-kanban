@@ -1,4 +1,4 @@
-package main.models;
+package main.exceptions;
 
 public class TypeMismatchException extends RuntimeException {
     public TypeMismatchException(String message) {

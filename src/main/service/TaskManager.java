@@ -46,5 +46,13 @@ public interface TaskManager {
 
     Subtask updateSubtask(Subtask newSubtask);
 
+    void updateEpicDuration(List<Integer> subtasksId, Integer epicId);
+
+    void updateEpicStartTime(List<Integer> subtasksId, Integer epicId);
+
+    void updateEpicEndTime(List<Integer> subtasksId, Integer epicId);
+
+    boolean timeValidation(Task inputTask);
+
     List<Task> getHistory();
 }
