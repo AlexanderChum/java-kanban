@@ -12,6 +12,8 @@ import java.nio.file.Files;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File fileForWork;
+    private final String startTimeDoesntExist = "Время начала не задано";
+    private final String endTimeDoesntExist = "Время конца не задано";
 
     public FileBackedTaskManager(File file) {
         this.fileForWork = file;
@@ -44,8 +46,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String duration = separatedLine[5];
         String startTime = separatedLine[6];
         String endTime = separatedLine[7];
-        if (startTime.equals("Время начала не задано")) startTime = null;
-        if (endTime.equals("Время конца не задано")) endTime = null;
+        if (startTimeDoesntExist.equals(startTime)) startTime = null;
+        if (endTimeDoesntExist.equals(endTime)) endTime = null;
 
         switch (taskType) {
             case TypesOfTasks.TASK:
@@ -133,10 +135,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String localDuration = String.valueOf(task.getDuration());
         if (task.getStartTime() != null) {
             localStartTime = task.getStartTime().format(Task.FORMATTER);
-        } else localStartTime = "Время начала не задано";
+        } else localStartTime = startTimeDoesntExist;
         if (task.getEndTime() != null) {
             localEndTime = task.getEndTime().format(Task.FORMATTER);
-        } else localEndTime = "Время конца не задано";
+        } else localEndTime = endTimeDoesntExist;
 
         if (super.tasks.containsKey(localId)) {
             return String.format("%s,%s,%s,%s,%s,%s,%s,%s", localId, TypesOfTasks.TASK, localName,
