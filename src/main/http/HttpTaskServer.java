@@ -21,7 +21,7 @@ public class HttpTaskServer {
         this.taskManager = taskManager;
     }
 
-    private void ServerHandlers() {
+    private void serverHandlers() {
         httpServer.createContext("/tasks", new TaskHandler(taskManager, gson));
         httpServer.createContext("/epics", new EpicHandler(taskManager, gson));
         httpServer.createContext("/subtasks", new SubtaskHandler(taskManager, gson));
@@ -35,7 +35,7 @@ public class HttpTaskServer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        ServerHandlers();
+        serverHandlers();
         httpServer.start();
         System.out.println("HTTP-сервер запущен на " + PORT + " порту!");
     }
