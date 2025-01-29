@@ -55,4 +55,6 @@ public interface TaskManager {
     boolean timeValidation(Task inputTask);
 
     List<Task> getHistory();
+
+    List<Task> getPrioritizedTasks();
 }
