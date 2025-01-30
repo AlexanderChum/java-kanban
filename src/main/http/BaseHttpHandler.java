@@ -11,12 +11,12 @@ public class BaseHttpHandler {
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     protected final Gson gson;
     protected final TaskManager taskManager;
-    protected final String ENDPOINT_NOT_FOUND = "Такого эндпоинта не существует";
-    protected final String TASK_NOT_FOUND = "Задачи с таким id не существует";
-    protected final String TASK_NOT_ACCEPTED = "Задача не смогла обработаться";
-    protected final String TASK_CREATE_SUCCESS = "Задача успешно создана";
-    protected final String TASK_UPDATE_SUCCESS = "Задача успешно обновлена";
-    protected final String TASK_DELETE_SUCCESS = "Задача(и) успешно удалена";
+    protected static final String ENDPOINT_NOT_FOUND = "Такого эндпоинта не существует";
+    protected static final String TASK_NOT_FOUND = "Задачи с таким id не существует";
+    protected static final String TASK_NOT_ACCEPTED = "Задача не смогла обработаться";
+    protected static final String TASK_CREATE_SUCCESS = "Задача успешно создана";
+    protected static final String TASK_UPDATE_SUCCESS = "Задача успешно обновлена";
+    protected static final String TASK_DELETE_SUCCESS = "Задача(и) успешно удалена";
 
 
     public BaseHttpHandler(TaskManager taskManager, Gson gson) {
