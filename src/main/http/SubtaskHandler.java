@@ -35,27 +35,29 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
     }
 
     private void createSubtask(HttpExchange exchange) throws IOException {
-        if (readRequest(exchange).isEmpty()) {
+        String requestBody = readRequest(exchange);
+        if (requestBody.isEmpty()) {
             sendHasInteractions(exchange);
         } else {
-            Subtask jsonSubtask = gson.fromJson(readRequest(exchange), Subtask.class);
+            Subtask jsonSubtask = gson.fromJson(requestBody, Subtask.class);
             Subtask result = taskManager.createSubtask(jsonSubtask);
             if (result == null) {
                 sendHasInteractions(exchange);
-            } else writeResponse(exchange, taskCreateSuccess, 201);
+            } else writeResponse(exchange, TASKCREATESUCCESS, 201);
         }
     }
 
     private void updateSubtask(HttpExchange exchange, Integer id) throws IOException {
-        if (readRequest(exchange).isEmpty()) {
+        String requestBody = readRequest(exchange);
+        if (requestBody.isEmpty()) {
             sendHasInteractions(exchange);
         } else {
-            Subtask jsonSubtask = gson.fromJson(readRequest(exchange), Subtask.class);
+            Subtask jsonSubtask = gson.fromJson(requestBody, Subtask.class);
             jsonSubtask.setId(id);
             Subtask result = taskManager.updateSubtask(jsonSubtask);
             if (result == null) {
                 sendHasInteractions(exchange);
-            } else writeResponse(exchange, taskUpdateSuccess, 201);
+            } else writeResponse(exchange, TASKUPDATESUCCESS, 200);
         }
     }
 
@@ -65,13 +67,13 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
             sendNotFound(exchange);
         } else {
             taskManager.deleteSubtaskById(id);
-            writeResponse(exchange, taskDeleteSuccess, 200);
+            writeResponse(exchange, TASKDELETESUCCESS, 200);
         }
     }
 
     private void deleteAllSubtasks(HttpExchange exchange) throws IOException {
         taskManager.deleteAllSubTasks();
-        writeResponse(exchange, taskDeleteSuccess, 200);
+        writeResponse(exchange, TASKDELETESUCCESS, 200);
     }
 
     private void getSubtaskById(HttpExchange exchange, Integer id) throws TaskNotFoundException, IOException {

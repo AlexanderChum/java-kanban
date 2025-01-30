@@ -11,12 +11,12 @@ public class BaseHttpHandler {
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     protected final Gson gson;
     protected final TaskManager taskManager;
-    protected final String endpointNotFound = "Такого эндпоинта не существует";
-    protected final String taskNotFound = "Задачи с таким id не существует";
-    protected final String taskNotAccepted = "Задача не смогла обработаться";
-    protected final String taskCreateSuccess = "Задача успешно создана";
-    protected final String taskUpdateSuccess = "Задача успешно обновлена";
-    protected final String taskDeleteSuccess = "Задача(и) успешно удалена";
+    protected final String ENDPOINTNOTFOUND = "Такого эндпоинта не существует";
+    protected final String TASKNOTFOUND = "Задачи с таким id не существует";
+    protected final String TASKNOTACCEPTED = "Задача не смогла обработаться";
+    protected final String TASKCREATESUCCESS = "Задача успешно создана";
+    protected final String TASKUPDATESUCCESS = "Задача успешно обновлена";
+    protected final String TASKDELETESUCCESS = "Задача(и) успешно удалена";
 
 
     public BaseHttpHandler(TaskManager taskManager, Gson gson) {
@@ -74,19 +74,18 @@ public class BaseHttpHandler {
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(responseString.getBytes(DEFAULT_CHARSET));
         }
-        //exchange.close();
     }
 
     protected void sendEndpointNotFound(HttpExchange exchange) throws IOException {
-        writeResponse(exchange, endpointNotFound, 400);
+        writeResponse(exchange, ENDPOINTNOTFOUND, 400);
     }
 
     protected void sendNotFound(HttpExchange exchange) throws IOException {
-        writeResponse(exchange, taskNotFound, 404);
+        writeResponse(exchange, TASKNOTFOUND, 404);
     }
 
     protected void sendHasInteractions(HttpExchange exchange) throws IOException {
-        writeResponse(exchange, taskNotAccepted, 406);
+        writeResponse(exchange, TASKNOTACCEPTED, 406);
     }
 
     public boolean isNumeric(String str) {
@@ -99,5 +98,10 @@ public class BaseHttpHandler {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    public void handleExceptions(HttpExchange exchange, Exception exception) throws IOException {
+        exception.printStackTrace();
+        writeResponse(exchange, exception.getMessage(), 418);
     }
 }

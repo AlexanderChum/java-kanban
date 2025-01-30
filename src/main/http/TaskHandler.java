@@ -36,58 +36,84 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
 
 
     private void createTask(HttpExchange exchange) throws IOException {
-        if (readRequest(exchange).isEmpty()) {
-            sendHasInteractions(exchange);
-        } else {
-            Task jsonTask = gson.fromJson(readRequest(exchange), Task.class);
-            Task result = taskManager.createTask(jsonTask);
-            if (result == null) {
+        try {
+            String requestBody = readRequest(exchange);
+            if (requestBody.isEmpty()) {
                 sendHasInteractions(exchange);
-            } else writeResponse(exchange, taskCreateSuccess, 201);
+            } else {
+                Task jsonTask = gson.fromJson(requestBody, Task.class);
+                Task result = taskManager.createTask(jsonTask);
+                if (result == null) {
+                    sendHasInteractions(exchange);
+                } else writeResponse(exchange, TASKCREATESUCCESS, 201);
+            }
+        } catch (Exception exception) {
+            handleExceptions(exchange, exception);
         }
     }
 
     private void updateTask(HttpExchange exchange, Integer id) throws IOException {
-        if (readRequest(exchange).isEmpty()) {
-            sendHasInteractions(exchange);
-        } else {
-            Task jsonTask = gson.fromJson(readRequest(exchange), Task.class);
-            jsonTask.setId(id);
-            Task result = taskManager.updateTask(jsonTask);
-            if (result == null) {
+        try {
+            String requestBody = readRequest(exchange);
+            if (requestBody.isEmpty()) {
                 sendHasInteractions(exchange);
-            } else writeResponse(exchange, taskUpdateSuccess, 201);
+            } else {
+                Task jsonTask = gson.fromJson(requestBody, Task.class);
+                jsonTask.setId(id);
+                Task result = taskManager.updateTask(jsonTask);
+                if (result == null) {
+                    sendHasInteractions(exchange);
+                } else writeResponse(exchange, TASKUPDATESUCCESS, 200);
+            }
+        } catch (Exception exception) {
+            handleExceptions(exchange, exception);
         }
     }
 
     private void deleteTask(HttpExchange exchange, Integer id) throws TaskNotFoundException, IOException {
-        Task task = taskManager.getTaskById(id);
-        if (task == null) {
-            sendNotFound(exchange);
-        } else {
-            taskManager.deleteTaskById(id);
-            writeResponse(exchange, taskDeleteSuccess, 200);
+        try {
+            Task task = taskManager.getTaskById(id);
+            if (task == null) {
+                sendNotFound(exchange);
+            } else {
+                taskManager.deleteTaskById(id);
+                writeResponse(exchange, TASKDELETESUCCESS, 200);
+            }
+        } catch (Exception exception) {
+            handleExceptions(exchange, exception);
         }
     }
 
     private void deleteAllTasks(HttpExchange exchange) throws IOException {
-        taskManager.deleteAllTasks();
-        writeResponse(exchange, taskDeleteSuccess, 200);
+        try {
+            taskManager.deleteAllTasks();
+            writeResponse(exchange, TASKDELETESUCCESS, 200);
+        } catch (Exception exception) {
+            handleExceptions(exchange, exception);
+        }
     }
 
     private void getTaskById(HttpExchange exchange, Integer id) throws TaskNotFoundException, IOException {
-        Task task = taskManager.getTaskById(id);
-        if (task == null) {
-            sendNotFound(exchange);
-        } else {
-            String taskToJson = gson.toJson(task);
-            writeResponse(exchange, taskToJson, 200);
+        try {
+            Task task = taskManager.getTaskById(id);
+            if (task == null) {
+                sendNotFound(exchange);
+            } else {
+                String taskToJson = gson.toJson(task);
+                writeResponse(exchange, taskToJson, 200);
+            }
+        } catch (Exception exception) {
+            handleExceptions(exchange, exception);
         }
     }
 
     private void getAllTasks(HttpExchange exchange) throws IOException {
-        String tasksToJson = gson.toJson(taskManager.getAllTasks());
-        writeResponse(exchange, tasksToJson, 200);
+        try {
+            String tasksToJson = gson.toJson(taskManager.getAllTasks());
+            writeResponse(exchange, tasksToJson, 200);
+        } catch (Exception exception) {
+            handleExceptions(exchange, exception);
+        }
     }
 
     @Override

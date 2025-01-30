@@ -26,7 +26,7 @@ class HttpTaskServerTest {
 
 
     @BeforeEach
-    public void testPreparations() throws IOException {
+    public void testPreparations() {
         taskManager.deleteAllEpics();
         taskManager.deleteAllTasks();
         taskServer.serverStart();
@@ -37,7 +37,7 @@ class HttpTaskServerTest {
         taskServer.serverStop();
     }
 
-    /*@Test
+    @Test
     void taskAdding() throws IOException, InterruptedException {
         Task task = new Task("Тест", "Описание");
         HttpClient client = HttpClient.newHttpClient();
@@ -91,7 +91,7 @@ class HttpTaskServerTest {
         List<Subtask> tasksFromManager = taskManager.getAllSubtasks();
         assertEquals(1, tasksFromManager.size());
         assertEquals("Тест 2", tasksFromManager.getFirst().getName());
-    }*/
+    }
 
 
     @Test
@@ -207,7 +207,7 @@ class HttpTaskServerTest {
         assertEquals(expectedTasks, tasks);
     }
 
-    /*@Test
+    @Test
     void getSubtasksByEpicId() throws IOException, InterruptedException {
         Epic epic = taskManager.createEpic(new Epic("Тестовый эпик", "Описание 1"));
         taskManager.createSubtask(new Subtask("Тестовый сабтаск", "Описание 2", epic.getId()));
@@ -224,7 +224,7 @@ class HttpTaskServerTest {
         String tasks = response.body();
         assertEquals(200, response.statusCode());
         assertEquals(expectedTasks, tasks);
-    }*/
+    }
 
     @Test
     void deleteAllTasks() throws IOException, InterruptedException {

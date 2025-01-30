@@ -21,7 +21,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
         Integer id = null;
         String subtasksTrue = null;
 
-        if (path.length == 3) {
+        if (path.length > 2) {
             if (isNumeric(path[2])) {
                 id = Integer.parseInt(path[2]);
             }
@@ -45,27 +45,29 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
     }
 
     private void createEpic(HttpExchange exchange) throws IOException {
-        if (readRequest(exchange).isEmpty()) {
+        String requestBody = readRequest(exchange);
+        if (requestBody.isEmpty()) {
             sendHasInteractions(exchange);
         } else {
-            Epic jsonEpic = gson.fromJson(readRequest(exchange), Epic.class);
+            Epic jsonEpic = gson.fromJson(requestBody, Epic.class);
             Epic result = taskManager.createEpic(jsonEpic);
             if (result == null) {
                 sendHasInteractions(exchange);
-            } else writeResponse(exchange, taskCreateSuccess, 201);
+            } else writeResponse(exchange, TASKCREATESUCCESS, 201);
         }
     }
 
     private void updateEpic(HttpExchange exchange, Integer id) throws IOException {
-        if (readRequest(exchange).isEmpty()) {
+        String requestBody = readRequest(exchange);
+        if (requestBody.isEmpty()) {
             sendHasInteractions(exchange);
         } else {
-            Epic jsonEpic = gson.fromJson(readRequest(exchange), Epic.class);
+            Epic jsonEpic = gson.fromJson(requestBody, Epic.class);
             jsonEpic.setId(id);
             Epic result = taskManager.updateEpic(jsonEpic);
             if (result == null) {
                 sendHasInteractions(exchange);
-            } else writeResponse(exchange, taskUpdateSuccess, 201);
+            } else writeResponse(exchange, TASKUPDATESUCCESS, 200);
         }
     }
 
@@ -75,13 +77,13 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
             sendNotFound(exchange);
         } else {
             taskManager.deleteEpicById(id);
-            writeResponse(exchange, taskDeleteSuccess, 200);
+            writeResponse(exchange, TASKDELETESUCCESS, 200);
         }
     }
 
     private void deleteAllEpics(HttpExchange exchange) throws IOException {
         taskManager.deleteAllEpics();
-        writeResponse(exchange, taskDeleteSuccess, 200);
+        writeResponse(exchange, TASKDELETESUCCESS, 200);
     }
 
     private void getEpicById(HttpExchange exchange, Integer id) throws TaskNotFoundException, IOException {
