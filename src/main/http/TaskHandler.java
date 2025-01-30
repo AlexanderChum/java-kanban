@@ -45,7 +45,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                 Task result = taskManager.createTask(jsonTask);
                 if (result == null) {
                     sendHasInteractions(exchange);
-                } else writeResponse(exchange, TASKCREATESUCCESS, 201);
+                } else writeResponse(exchange, TASK_CREATE_SUCCESS, 201);
             }
         } catch (Exception exception) {
             handleExceptions(exchange, exception);
@@ -63,7 +63,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                 Task result = taskManager.updateTask(jsonTask);
                 if (result == null) {
                     sendHasInteractions(exchange);
-                } else writeResponse(exchange, TASKUPDATESUCCESS, 200);
+                } else writeResponse(exchange, TASK_UPDATE_SUCCESS, 200);
             }
         } catch (Exception exception) {
             handleExceptions(exchange, exception);
@@ -77,7 +77,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                 sendNotFound(exchange);
             } else {
                 taskManager.deleteTaskById(id);
-                writeResponse(exchange, TASKDELETESUCCESS, 200);
+                writeResponse(exchange, TASK_DELETE_SUCCESS, 200);
             }
         } catch (Exception exception) {
             handleExceptions(exchange, exception);
@@ -87,7 +87,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
     private void deleteAllTasks(HttpExchange exchange) throws IOException {
         try {
             taskManager.deleteAllTasks();
-            writeResponse(exchange, TASKDELETESUCCESS, 200);
+            writeResponse(exchange, TASK_DELETE_SUCCESS, 200);
         } catch (Exception exception) {
             handleExceptions(exchange, exception);
         }

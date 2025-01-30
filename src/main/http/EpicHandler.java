@@ -53,7 +53,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
             Epic result = taskManager.createEpic(jsonEpic);
             if (result == null) {
                 sendHasInteractions(exchange);
-            } else writeResponse(exchange, TASKCREATESUCCESS, 201);
+            } else writeResponse(exchange, TASK_CREATE_SUCCESS, 201);
         }
     }
 
@@ -67,7 +67,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
             Epic result = taskManager.updateEpic(jsonEpic);
             if (result == null) {
                 sendHasInteractions(exchange);
-            } else writeResponse(exchange, TASKUPDATESUCCESS, 200);
+            } else writeResponse(exchange, TASK_UPDATE_SUCCESS, 200);
         }
     }
 
@@ -77,13 +77,13 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
             sendNotFound(exchange);
         } else {
             taskManager.deleteEpicById(id);
-            writeResponse(exchange, TASKDELETESUCCESS, 200);
+            writeResponse(exchange, TASK_DELETE_SUCCESS, 200);
         }
     }
 
     private void deleteAllEpics(HttpExchange exchange) throws IOException {
         taskManager.deleteAllEpics();
-        writeResponse(exchange, TASKDELETESUCCESS, 200);
+        writeResponse(exchange, TASK_DELETE_SUCCESS, 200);
     }
 
     private void getEpicById(HttpExchange exchange, Integer id) throws TaskNotFoundException, IOException {

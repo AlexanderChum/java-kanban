@@ -11,12 +11,12 @@ public class BaseHttpHandler {
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     protected final Gson gson;
     protected final TaskManager taskManager;
-    protected final String ENDPOINTNOTFOUND = "Такого эндпоинта не существует";
-    protected final String TASKNOTFOUND = "Задачи с таким id не существует";
-    protected final String TASKNOTACCEPTED = "Задача не смогла обработаться";
-    protected final String TASKCREATESUCCESS = "Задача успешно создана";
-    protected final String TASKUPDATESUCCESS = "Задача успешно обновлена";
-    protected final String TASKDELETESUCCESS = "Задача(и) успешно удалена";
+    protected final String ENDPOINT_NOT_FOUND = "Такого эндпоинта не существует";
+    protected final String TASK_NOT_FOUND = "Задачи с таким id не существует";
+    protected final String TASK_NOT_ACCEPTED = "Задача не смогла обработаться";
+    protected final String TASK_CREATE_SUCCESS = "Задача успешно создана";
+    protected final String TASK_UPDATE_SUCCESS = "Задача успешно обновлена";
+    protected final String TASK_DELETE_SUCCESS = "Задача(и) успешно удалена";
 
 
     public BaseHttpHandler(TaskManager taskManager, Gson gson) {
@@ -77,15 +77,15 @@ public class BaseHttpHandler {
     }
 
     protected void sendEndpointNotFound(HttpExchange exchange) throws IOException {
-        writeResponse(exchange, ENDPOINTNOTFOUND, 400);
+        writeResponse(exchange, ENDPOINT_NOT_FOUND, 400);
     }
 
     protected void sendNotFound(HttpExchange exchange) throws IOException {
-        writeResponse(exchange, TASKNOTFOUND, 404);
+        writeResponse(exchange, TASK_NOT_FOUND, 404);
     }
 
     protected void sendHasInteractions(HttpExchange exchange) throws IOException {
-        writeResponse(exchange, TASKNOTACCEPTED, 406);
+        writeResponse(exchange, TASK_NOT_ACCEPTED, 406);
     }
 
     public boolean isNumeric(String str) {

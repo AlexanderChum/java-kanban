@@ -43,7 +43,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
             Subtask result = taskManager.createSubtask(jsonSubtask);
             if (result == null) {
                 sendHasInteractions(exchange);
-            } else writeResponse(exchange, TASKCREATESUCCESS, 201);
+            } else writeResponse(exchange, TASK_CREATE_SUCCESS, 201);
         }
     }
 
@@ -57,7 +57,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
             Subtask result = taskManager.updateSubtask(jsonSubtask);
             if (result == null) {
                 sendHasInteractions(exchange);
-            } else writeResponse(exchange, TASKUPDATESUCCESS, 200);
+            } else writeResponse(exchange, TASK_UPDATE_SUCCESS, 200);
         }
     }
 
@@ -67,13 +67,13 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
             sendNotFound(exchange);
         } else {
             taskManager.deleteSubtaskById(id);
-            writeResponse(exchange, TASKDELETESUCCESS, 200);
+            writeResponse(exchange, TASK_DELETE_SUCCESS, 200);
         }
     }
 
     private void deleteAllSubtasks(HttpExchange exchange) throws IOException {
         taskManager.deleteAllSubTasks();
-        writeResponse(exchange, TASKDELETESUCCESS, 200);
+        writeResponse(exchange, TASK_DELETE_SUCCESS, 200);
     }
 
     private void getSubtaskById(HttpExchange exchange, Integer id) throws TaskNotFoundException, IOException {
