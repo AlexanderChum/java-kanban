@@ -13,7 +13,7 @@ public class Task {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
-    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public Task(String name, String description) {
         this.name = name;
